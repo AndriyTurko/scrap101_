@@ -20,40 +20,50 @@ class Camping:
         dict_gs = json.loads(json_text2)
         return dict_gs
 
-    def get_price(self):
-        price_list = self.tree.xpath('//span[@id="priceSellingVat"]')
-        print(price_list)
-        price = price_list[0].text
-        price_int = int(price.replace(u"\xa0", u"").replace('грн', '').replace('\n', '').replace('від', '').replace('   ', '').replace(' ', ''))
-        return price_int
+    #print(''.join(tree.xpath('//div[@class="title_wrapper"]')[0].itertext()))
+
+    # def get_price(self):
+    #     price_list = self.tree.xpath('//span[@id="priceSellingVat"]')
+    #     print(price_list)
+    #     price = price_list[0].text
+    #     price_int = int(price.replace(u"\xa0", u"").replace('грн', '').replace('\n', '').replace('від', '').replace('   ', '').replace(' ', ''))
+    #     massage_price = self.tree.xpath('//strong[@id="priceWithDiscount"]')[0]
+    #     massage_currency = self.tree.xpath('//span[@class="currency"]')[0]
+    #     massage_text = self.tree.xpath('//strong')[0]
+    #     print(massage_price.text)
+    #     print(massage_currency.text)
+    #     print(massage_text.text)
+    #     return price_int
+
+    def get_price2(self, variant_dict):
+        regular_price = variant_dict['price']
+        fmp_price = variant_dict['priceOld']
+        price_dict = {'regular': regular_price, 'fmp': fmp_price, 'currency': 'UAH'}
+        message_price = variant_dict['priceWithDiscountFormatted']
+        message_price_int = int(message_price.replace('&nbsp;', '').replace('<span class="currency">грн</span>', ''))
+        print(message_price_int)
+        if message_price_int != regular_price:
+            price_dict['message'] = str(message_price_int) + ' грн для членів 4camping eXtra'
+        return price_dict
 
     def get_variants2(self):
         variants_list = []
         if 'variantsInfo' in self.get_json():
             variants_info_data = self.get_json()['variantsInfo']
-            for variant_dict in variants_info_data:
-                split_name = variants_info_data[variant_dict]['name'].split('/')
-                selection_dict = {}
-                for split_variant in split_name:
-                    split_name2 = split_variant.split(':')
-                    split_name3 = split_name2[1].replace(' ', '')
-                    key_name = split_name2[0].strip()
-                    if key_name in ['Розмір взуття (EU)', 'Розмір']:
-                        key_name = 'size'
-                    elif key_name == 'Колір':
-                        key_name = 'color'
-                    elif key_name == 'Блискавка':
-                        key_name = 'zip'
-                    selection_dict[key_name] = split_name3
-                regular_price = variants_info_data[variant_dict]['price']
-                fmp_price = variants_info_data[variant_dict]['priceOld']
-                price_dict = {'regular': regular_price, 'fmp': fmp_price, 'currency': 'UAH'}
-                id_dict = variants_info_data[variant_dict]['id']
-                availability = variants_info_data[variant_dict]['availability']
-                stock_dict = {'status': availability}
+            for variant_dict in variants_info_data.values():
+                price_dict = self.get_price2(variant_dict)
+                id_dict = variant_dict['id']
+                availability = variant_dict['availability']
+                if availability == 'На складі':
+                    stock_dict = {'status': 'in_stock'}
+                else:
+                    stock_dict = {'status': 'in_stock', 'message': availability}
+                cart_id = variant_dict['productId']
+                cart_dict = {"id": cart_id, "variant": id_dict}
                 variants_list.append({
+                    'cart': cart_dict,
                     'price': price_dict,
-                    'selection': selection_dict,
+                    'selection': variant_dict['params'],
                     'id': id_dict,
                     'stock': stock_dict,
                 })
@@ -133,6 +143,9 @@ class Camping:
         return videos_list
 
     def get_domain_type(self, control_group):
+        # TODO 6. Робити в останню чергу - пишу щоб не забути.
+        #  для товарів де немає 'color' або 'size' для якогось атрибуту написати 'domainType: 'fit'
+        #  (приклад https://4camping.com.ua/p/pinguin-safari/)
         following_button = control_group.xpath("./following-sibling::button")
         if following_button:
             button_id = following_button[0].get('id')
