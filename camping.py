@@ -79,9 +79,7 @@ class Camping:
 
     def get_descr(self):
         descr_l = self.tree.xpath('//div[@class="truncated-content-inner"]')
-        print(descr_l)
         descr = descr_l[0].itertext()
-        print(descr)
         descr_l = ' '.join(descr)
         descr_end = descr_l.replace("\xa0", "").replace('\n\t', '').replace('  ', ' ').replace(' .', '.').replace('\n', '').replace(' , ', ', ').replace('.  ', '. ').replace('  ', '').replace('.', '. ')
         return descr_end
