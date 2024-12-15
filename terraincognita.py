@@ -270,20 +270,20 @@ class Terra:
     #         })
     #     return assets_list
 
-    def get_availability(self):
-        brand_id = self.get_brand()
-        store_id = 'terraincognita'
-        product_id = self.tree.xpath('//input[@name="product_id"]')[0].get('value')
-        hash = self.get_hash(store_id, product_id, brand_id)
-        variant = self.get_variants()
-        availability_dict = {
-            'extractedUrl': self.page_link,
-            'hash': hash,
-            'product_id': product_id,
-            'store_id': store_id,
-            'variants': variant,
-        }
-        return {'product': availability_dict}
+        def get_availability(self):
+            brand_id = self.get_brand()
+            store_id = 'terraincognita'
+            product_id = self.tree.xpath('//input[@name="product_id"]')[0].get('value')
+            hash = self.get_hash(store_id, product_id, brand_id)
+            variant = self.get_variants()
+            availability_dict = {
+                'extractedUrl': self.page_link,
+                'hash': hash,
+                'product_id': product_id,
+                'store_id': store_id,
+                'variants': variant,
+            }
+            return {'product': availability_dict}
 
     def get_full(self):
         product_id = self.tree.xpath('//input[@name="product_id"]')[0].get('value')
