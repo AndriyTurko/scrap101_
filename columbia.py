@@ -13,6 +13,7 @@ class Columbia:
         self.from_file = from_file
         self.page_link = page_link
         self.soup = self.get_soup()
+        self.json_variation = self.get_json_variation()
 
     def get_soup(self):
         file_name = ('temp_files/' + self.page_link.replace('https://www.columbia.com/p/', '').replace('/', '') +
@@ -43,9 +44,11 @@ class Columbia:
                         dict_gs = json.loads(script_dict)
                         return dict_gs
 
-    def json_from_requests(self):
-        x = requests.get('https://www.columbia.com/p/womens-pfg-tamiami-ii-long-sleeve-shirt---plus-size-1275702.html').text
-        print(json.loads(x))
+    def get_json_variation(self):
+        product_id = self.soup.find_all('span', class_='product-id')[0].get_text()
+        json_link = 'https://www.columbia.com/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?pid=' + product_id
+        response = requests.get(json_link)
+        return json.loads(response.content.decode('utf-8'))
 
     def get_variants(self):
         variants_list = []
@@ -83,6 +86,7 @@ class Columbia:
         attr_l_color = self.soup.find_all('div', class_='attribute js-color-attribute')[0]
         color_l = attr_l_color.find_all('span', class_='swatch__core js-attribute-value color-value')
         values_color_list = []
+        #soup.findAll(attrs={'class': re.compile(r"^product$")})
         for c in color_l:
             color_id = c.get('data-attr-value')
             color_name = c.get('title')
@@ -102,18 +106,24 @@ class Columbia:
         name = self.soup.find_all("h1", class_="product-name mb-0")[0].get_text()
         return name
 
+    def get_price_value(self, price_l, price_name):
+        fmp_price = None
+        for x in price_l.find_all('span', class_='value'):
+            p_name = x.find_all('span')[0].get_text()
+            if price_name in p_name:
+                fmp_price = x.get('content')
+                break
+        return fmp_price
+
     def get_price(self):
         price_dict = {}
         price_l = self.soup.find_all('div', class_='price')[0]
-        fmp_price_ex = price_l.find_all('span', class_="value discounted")
-        regular_price = price_l.find_all('span', class_='value')[0].get('content')
+        fmp_price = self.get_price_value(price_l, 'Regular price:')
+        price_dict['fmp'] = fmp_price
+        regular_price = self.get_price_value(price_l, 'Sale price:')
+        if not regular_price:
+            regular_price = fmp_price
         price_dict['regular'] = regular_price
-        if fmp_price_ex:
-            fmp_price = fmp_price_ex[0].get('content')
-            price_dict['fmp'] = fmp_price
-        else:
-            fmp_price = regular_price
-            price_dict['fmp'] = fmp_price
         currency = price_l.find_all('meta', itemprop="priceCurrency")[0].get('content')
         price_dict['currency'] = currency
         message_l = self.soup.find_all('div', class_='js-rewards-container')
