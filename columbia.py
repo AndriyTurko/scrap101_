@@ -52,9 +52,14 @@ class Columbia:
 
     def get_variants(self):
         variants_list = []
+        cart_dict = {}
         gjv = self.get_json_variants()
+        #gjv2 = self.get_json_variation()
         price_dict = self.get_price()
+        # for g in gjv2:
+        #     print(gjv2['dtmLayer'])
         for x in gjv:
+            cart_dict['pid'] = x
             color_id = gjv[x]['color']
             size = gjv[x]['size']
             selection_dict = {'color': color_id, 'size': size}
@@ -66,40 +71,58 @@ class Columbia:
                 }
             else:
                 continue
-            #     stock_dict = {
-            #         'status': 'not_in_stock',
-            #         'quantity': availability,
-                #}
+
             variants_list.append({
-                #'cart': cart_dict,
+                'cart': cart_dict,
                 'id': x,
                 'price': price_dict,
                 'selection': selection_dict,
-                #'sku': gjv[x]['sku'],
+                #'sku': x,
                 'stock': stock_dict,
             })
         return variants_list
 
     def get_attributes(self):
         attributes_list = []
-        attr_dict = {}
+        attributes_dict = {}
+        values_color_list = []
+        color_attr_dict = {}
         attr_l_color = self.soup.find_all('div', class_='attribute js-color-attribute')[0]
         color_l = attr_l_color.find_all('span', class_='swatch__core js-attribute-value color-value')
-        values_color_list = []
+        selected_color = attr_l_color.find_all('span', class_='swatch__core js-attribute-value color-value selected')
+        color_attr_dict['domainType'] = 'color'
+        color_attr_dict['id'] = 'color_id'
+        color_attr_dict['label'] = 'Color'
+        qwerty = []
+        vcl = []
         #soup.findAll(attrs={'class': re.compile(r"^product$")})
+        for sc in selected_color:
+            qwerty.append(sc)
         for c in color_l:
-            color_id = c.get('data-attr-value')
-            color_name = c.get('title')
-            values_color_list.append({'id': color_id, 'name': color_name, 'swatch': 'swatch'})
+            qwerty.append(c)
+        for q in qwerty:
+            color_id = q.get('data-attr-value')
+            color_name = q.get('title')
+            swatch = q.get('style').split('(')[1].replace(')', '').split(',')[0]
+            vcl.append({'id': color_id, 'name': color_name, 'swatch': swatch})
+        color_attr_dict['values'] = vcl
+        values_color_list.append(color_attr_dict)
+        attributes_dict['color'] = values_color_list
+        values_size_list = []
+        size_attr_dict = {}
         attr_l_size = self.soup.find_all('div', class_='attribute js-size-attribute')[0]
         size_l = attr_l_size.find_all('a')
-        values_size_list = []
+        size_attr_dict['domainType'] = 'size'
+        size_attr_dict['label'] = 'Size'
+        size_attr_dict['id'] = 'id'
+        vsl = []
         for s in size_l:
             size_name = s.get('data-attr-hover')
-            values_size_list.append({'id': 'size_id', 'name': size_name})
-        attr_dict['values_color'] = values_color_list
-        attr_dict['values_size'] = values_size_list
-        attributes_list.append(attr_dict)
+            vsl.append({'id': 'size_id', 'name': size_name})
+        size_attr_dict['values'] = vsl
+        values_size_list.append(size_attr_dict)
+        attributes_dict['size'] = values_size_list
+        attributes_list.append(attributes_dict)
         return attributes_list
 
     def get_name(self):
@@ -149,13 +172,17 @@ class Columbia:
 
     def get_photo(self):
         photos_list = []
+        selector_dict = {}
         photo_l = self.soup.find_all('ul', class_='swiper-wrapper list-unstyled')[0]
         p_l = photo_l.find_all('div', class_="swiper-zoom-container")
         for x in p_l:
             urls = x.find_all('img')[0].get('src')
             photos_dict = {'url': urls}
+            color_name = x.find_all('img')[0].get('alt').split(': ')[1].split(',')[0]
+            color_id = self.soup.find_all('span', title=color_name)[0].get('data-attr-value')
+            selector_dict['color'] = color_id
             photos_list.append(photos_dict)
-        return photos_list
+        return photos_list, selector_dict
 
     def get_video(self):
         videos_list = []
@@ -171,7 +198,8 @@ class Columbia:
         assets_dict = {}
         photos = self.get_photo()
         videos = self.get_video()
-        assets_dict['photos'] = photos
+        assets_dict['images'] = photos[0]
+        assets_dict['selector'] = photos[1]
         assets_dict['videos'] = videos
         assets_list.append(assets_dict)
         return assets_list
