@@ -179,29 +179,6 @@ class Columbia:
             bread = x.get_text().replace('\n', '').replace('amp;', '').replace('  ', '')
             bread_list.append(bread)
         return bread_list
-
-    # def get_photo(self):
-    #     photos_list = []
-    #     selector_dict = {}
-    #     photo_l = self.soup.find_all('ul', class_='swiper-wrapper list-unstyled')[0]
-    #     p_l = photo_l.find_all('div', class_="swiper-zoom-container")
-    #     for x in p_l:
-    #         urls = x.find_all('img')[0].get('src')
-    #         photos_dict = {'url': urls}
-    #         color_name = x.find_all('img')[0].get('alt').split(': ')[1].split(',')[0]
-    #         color_id = self.soup.find_all('span', title=color_name)[0].get('data-attr-value')
-    #         selector_dict['color'] = color_id
-    #         photos_list.append(photos_dict)
-    #     return photos_list, selector_dict
-
-    # def get_video(self):
-    #     videos_list = []
-    #     video_l = self.soup.find_all('div', class_='video-play-button js-video-player video-aspectratio')
-    #     for x in video_l:
-    #         video = x.find_all('img')[0].get('src')
-    #         videos_dict = {'url': video}
-    #         videos_list.append(videos_dict)
-    #     return videos_list
     
     def get_assets(self):
         assets_list = []
