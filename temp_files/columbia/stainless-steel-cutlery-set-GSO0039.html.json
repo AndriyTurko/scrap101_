@@ -1,0 +1,509 @@
+{
+  "action": "Product-Variation",
+  "queryString": "pid=GSO0039",
+  "locale": "en_US",
+  "product": {
+    "id": "090497873485",
+    "materialStyleNumber": "GSO0039",
+    "bonusProductNameOverride": "Stainless Steel Cutlery Set",
+    "tileName": "Stainless Steel Cutlery Set",
+    "variantName": "Stainless Steel Cutlery Set | 029 | O/S",
+    "productType": "variant",
+    "online": true,
+    "assignedToSite": true,
+    "searchableIfUnavailable": null,
+    "isMaster": false,
+    "productLinks": [],
+    "oldChemistryText": "",
+    "parentCategoryID": null,
+    "primaryCategoryID": null,
+    "selectedQuantity": 1,
+    "minOrderQuantity": 1,
+    "maxOrderQuantity": 10,
+    "variationAttributes": [
+      {
+        "attributeId": "color",
+        "displayName": "Color",
+        "id": "color",
+        "topLevelAttribute": true,
+        "swatchable": true,
+        "values": [
+          {
+            "id": "029",
+            "description": null,
+            "displayValue": "Stainless",
+            "value": "029",
+            "selected": true,
+            "selectable": true,
+            "masterSelectable": true,
+            "url": "https://www.columbia.com/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?dwvar_GSO0039_color=029&dwvar_GSO0039_size=O%2FS&pid=GSO0039",
+            "galleryUrl": "https://www.columbia.com/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Gallery?dwvar_GSO0039_color=029&dwvar_GSO0039_size=O%2FS&pid=GSO0039",
+            "pdpUrl": "https://www.columbia.com/p/stainless-steel-cutlery-set-GSO0039.html?dwvar_GSO0039_color=029&dwvar_GSO0039_size=O%2FS",
+            "onSale": true,
+            "salesPrice": {
+              "value": 9.75,
+              "currency": "USD",
+              "formatted": "$9.75",
+              "decimalPrice": "9.75"
+            },
+            "listPrice": {
+              "value": 13,
+              "currency": "USD",
+              "formatted": "$13.00",
+              "decimalPrice": "13.00"
+            },
+            "images": {
+              "swatch": [
+                {
+                  "alt": "Stainless Steel Cutlery Set, Color: Stainless",
+                  "url": "https://columbia.scene7.com/is/image/ColumbiaSportswear2/GSO0039_029_sw?wid=42&hei=42&v=1734681990",
+                  "retinaUrl": "https://columbia.scene7.com/is/image/ColumbiaSportswear2/GSO0039_029_sw?wid=84&hei=84&v=1734681990",
+                  "title": "Stainless Steel Cutlery Set",
+                  "modelData": null,
+                  "width": "42",
+                  "height": "42"
+                }
+              ],
+              "large": [
+                {
+                  "alt": "Stainless Steel Cutlery Set, Color: Stainless",
+                  "url": "https://columbia.scene7.com/is/image/ColumbiaSportswear2/GSO0039_029_f?wid=768&hei=806&v=1734681990",
+                  "retinaUrl": "https://columbia.scene7.com/is/image/ColumbiaSportswear2/GSO0039_029_f?wid=1536&hei=1612&v=1734681990",
+                  "title": "Stainless Steel Cutlery Set",
+                  "modelData": null,
+                  "width": "768",
+                  "height": "806"
+                }
+              ]
+            }
+          }
+        ],
+        "selectedValue": "029"
+      },
+      {
+        "attributeId": "size",
+        "displayName": "Size",
+        "id": "size",
+        "topLevelAttribute": false,
+        "swatchable": false,
+        "values": [
+          {
+            "id": "O/S",
+            "description": null,
+            "displayValue": "O/S",
+            "value": "O/S",
+            "selected": true,
+            "selectable": true,
+            "masterSelectable": true,
+            "galleryUrl": "https://www.columbia.com/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Gallery?dwvar_GSO0039_color=029&dwvar_GSO0039_size=O%2FS&pid=GSO0039",
+            "pdpUrl": "https://www.columbia.com/p/stainless-steel-cutlery-set-GSO0039.html?dwvar_GSO0039_color=029&dwvar_GSO0039_size=O%2FS",
+            "url": "https://www.columbia.com/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?dwvar_GSO0039_color=029&dwvar_GSO0039_size=O%2FS&pid=GSO0039"
+          }
+        ],
+        "resetUrl": "https://www.columbia.com/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?dwvar_GSO0039_color=029&dwvar_GSO0039_size=O%2FS&pid=GSO0039",
+        "selectedValue": "O/S"
+      }
+    ],
+    "topLevelAttribute": "color",
+    "variantData": {
+      "090497873485": {
+        "color": "029",
+        "size": "O/S",
+        "bisnflag": false,
+        "inventory": 930
+      }
+    },
+    "variantMatrix": {
+      "color": {
+        "029": [
+          "090497873485"
+        ]
+      },
+      "size": {
+        "O/S": [
+          "090497873485"
+        ]
+      },
+      "bisnflag": {
+        "false": [
+          "090497873485"
+        ]
+      },
+      "inventory": {
+        "930": [
+          "090497873485"
+        ]
+      }
+    },
+    "productPitch": "Dig in at the campsite with a sleek knife, fork, and spoon set.",
+    "longDescription": null,
+    "seo": {
+      "title": "Stainless Steel Cutlery Set",
+      "description": "Dig in at the campsite with a sleek knife, fork, and spoon set."
+    },
+    "productPDFS": null,
+    "productPDFSUrl": null,
+    "rating": {
+      "average": 4.9143,
+      "count": 35,
+      "range": 5
+    },
+    "attributes": [
+      {
+        "ID": "productCopy",
+        "name": "Product Copy Attributes",
+        "attributes": [
+          {
+            "label": "Product Pitch",
+            "value": [
+              "Dig in at the campsite with a sleek knife, fork, and spoon set."
+            ],
+            "ID": "productPitch"
+          }
+        ]
+      },
+      {
+        "ID": "productFeatures",
+        "name": "Product Features",
+        "attributes": [
+          {
+            "label": "Activity",
+            "value": [
+              "Camping"
+            ],
+            "ID": "activity"
+          }
+        ]
+      },
+      {
+        "ID": "Order",
+        "name": "Order Attributes",
+        "attributes": [
+          {
+            "label": "Proposition 65 warning",
+            "value": [
+              false
+            ],
+            "ID": "prop65"
+          }
+        ]
+      }
+    ],
+    "readyToOrder": true,
+    "available": true,
+    "notifyme": false,
+    "buttonText": "Add to Bag",
+    "updateButtonText": "Update",
+    "velocityMessage": {
+      "messages": []
+    },
+    "options": [],
+    "quantities": [
+      {
+        "value": "1",
+        "selected": true,
+        "url": "/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?dwvar_GSO0039_color=029&dwvar_GSO0039_dimension=O%2FS&dwvar_GSO0039_size=O%2FS&dwvar_GSO0039_sizeType=O%2FS&pid=090497873485&quantity=1"
+      },
+      {
+        "value": "2",
+        "selected": false,
+        "url": "/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?dwvar_GSO0039_color=029&dwvar_GSO0039_dimension=O%2FS&dwvar_GSO0039_size=O%2FS&dwvar_GSO0039_sizeType=O%2FS&pid=090497873485&quantity=2"
+      },
+      {
+        "value": "3",
+        "selected": false,
+        "url": "/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?dwvar_GSO0039_color=029&dwvar_GSO0039_dimension=O%2FS&dwvar_GSO0039_size=O%2FS&dwvar_GSO0039_sizeType=O%2FS&pid=090497873485&quantity=3"
+      },
+      {
+        "value": "4",
+        "selected": false,
+        "url": "/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?dwvar_GSO0039_color=029&dwvar_GSO0039_dimension=O%2FS&dwvar_GSO0039_size=O%2FS&dwvar_GSO0039_sizeType=O%2FS&pid=090497873485&quantity=4"
+      },
+      {
+        "value": "5",
+        "selected": false,
+        "url": "/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?dwvar_GSO0039_color=029&dwvar_GSO0039_dimension=O%2FS&dwvar_GSO0039_size=O%2FS&dwvar_GSO0039_sizeType=O%2FS&pid=090497873485&quantity=5"
+      },
+      {
+        "value": "6",
+        "selected": false,
+        "url": "/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?dwvar_GSO0039_color=029&dwvar_GSO0039_dimension=O%2FS&dwvar_GSO0039_size=O%2FS&dwvar_GSO0039_sizeType=O%2FS&pid=090497873485&quantity=6"
+      },
+      {
+        "value": "7",
+        "selected": false,
+        "url": "/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?dwvar_GSO0039_color=029&dwvar_GSO0039_dimension=O%2FS&dwvar_GSO0039_size=O%2FS&dwvar_GSO0039_sizeType=O%2FS&pid=090497873485&quantity=7"
+      },
+      {
+        "value": "8",
+        "selected": false,
+        "url": "/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?dwvar_GSO0039_color=029&dwvar_GSO0039_dimension=O%2FS&dwvar_GSO0039_size=O%2FS&dwvar_GSO0039_sizeType=O%2FS&pid=090497873485&quantity=8"
+      },
+      {
+        "value": "9",
+        "selected": false,
+        "url": "/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?dwvar_GSO0039_color=029&dwvar_GSO0039_dimension=O%2FS&dwvar_GSO0039_size=O%2FS&dwvar_GSO0039_sizeType=O%2FS&pid=090497873485&quantity=9"
+      },
+      {
+        "value": "10",
+        "selected": false,
+        "url": "/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?dwvar_GSO0039_color=029&dwvar_GSO0039_dimension=O%2FS&dwvar_GSO0039_size=O%2FS&dwvar_GSO0039_sizeType=O%2FS&pid=090497873485&quantity=10"
+      }
+    ],
+    "selectedProductUrl": "/p/stainless-steel-cutlery-set-GSO0039.html?dwvar_GSO0039_color=029&dwvar_GSO0039_size=O%2FS",
+    "productVideoThumbnail": null,
+    "productVideoAltText": null,
+    "hasVideo": null,
+    "videoType": "vimeo",
+    "videoID": null,
+    "activitiesDescription": "Uses: Camping",
+    "availableForInStorePickup": false,
+    "isLite": false,
+    "isArchived": false,
+    "isGiftCard": false,
+    "badges": {
+      "gridBadge": {
+        "value": "Sale",
+        "display": "Sale"
+      },
+      "gridTechBadge": null,
+      "pdpTechBadge": null,
+      "hideSaleBadge": false,
+      "hideDynamicBadges": false,
+      "pdpBadges": [],
+      "clpShowBadge": true,
+      "showPdpGridBadge": true
+    },
+    "pdpTechBadge": null,
+    "overview": [],
+    "initialVariablesJsonString": null,
+    "finalVariablesJsonString": "{\"sizeType\":{\"id\":\"GSO0039\",\"value\":\"O/S\"},\"color\":{\"id\":\"GSO0039\",\"value\":\"029\"},\"size\":{\"id\":\"GSO0039\",\"value\":\"O/S\"},\"dimension\":{\"id\":\"GSO0039\",\"value\":\"O/S\"}}",
+    "countdownDetailsAssetID": "",
+    "countdownEndDate": null,
+    "countdownPrompt": null,
+    "countdownFinishMsg": null,
+    "exclusivePromotion": null,
+    "pointsMultiplier": null,
+    "canEnrollInLoyalty": true,
+    "loyaltyActiveInCurrentSession": false,
+    "isColorVariantsUnavailable": false,
+    "custom": {},
+    "price": {
+      "sales": {
+        "value": 9.75,
+        "currency": "USD",
+        "formatted": "$9.75",
+        "decimalPrice": "9.75"
+      },
+      "list": {
+        "value": 13,
+        "currency": "USD",
+        "formatted": "$13.00",
+        "decimalPrice": "13.00"
+      },
+      "originalSalesPrice": {},
+      "savedPercentage": "25",
+      "html": "    <div class=\"price\">\n        \n        \n\n\n<meta itemprop=\"priceCurrency\" content=\"USD\" />\n\n<span>\n    <span class=\"sales\">\n        \n\n        \n            \n                \n                \n                <span class=\"value  discounted\" itemprop=\"price\" tabindex=\"0\" content=\"9.75\">\n                    <span class=\"sr-only\">Sale price: </span>\n                    $9.75\n                </span>\n            \n        \n    </span>\n\n    \n        \n        <meta itemprop=\"priceCurrency\" content=\"USD\" />\n        <span class=\"strike-through list\">\n            <span class=\"value\" itemprop=\"price\" tabindex=\"0\" content=\"13.00\">\n                <span class=\"sr-only\">Regular price: </span>\n                $13.00\n            </span>\n        </span>\n    \n\n    \n        <span class=\"price ml-2\">\n            <span class=\"sales\">\n                <span class=\"value discounted sales-discount-percent js-discount-percent\">Save 25%</span>\n            </span>\n       </span>\n    \n</span>\n\n    </div>\n\n\n"
+    },
+    "attributesHtml": "    <div class=\"col-sm-12 col-md-4 col-lg-3\">\n        <button class=\"title btn text-left btn-block d-sm-none\"\n                aria-expanded=\"false\" aria-controls=\"collapsible-attributes-1\"\n        >\n            Attributes\n        </button>\n        <h2 class=\"title d-none d-sm-block\">\n            Attributes\n        </h2>\n    </div>\n    <div class=\"col-sm-12 col-md-8 col-lg-9 value content\" id=\"collapsible-attributes-1\">\n        \n            \n                <h3 class=\"attribute-name\">\n                    Product Copy Attributes\n                </h3>\n                <ul>\n                    \n                        <li class=\"attribute-values\">\n                            Product Pitch:\n                            \n                                Dig in at the campsite with a sleek knife, fork, and spoon set.\n                            \n                        </li>\n                    \n                </ul>\n            \n        \n            \n                <h3 class=\"attribute-name\">\n                    Product Features\n                </h3>\n                <ul>\n                    \n                        <li class=\"attribute-values\">\n                            Activity:\n                            \n                                Camping\n                            \n                        </li>\n                    \n                </ul>\n            \n        \n            \n                <h3 class=\"attribute-name\">\n                    Order Attributes\n                </h3>\n                <ul>\n                    \n                        <li class=\"attribute-values\">\n                            Proposition 65 warning:\n                            \n                                false\n                            \n                        </li>\n                    \n                </ul>\n            \n        \n    </div>\n\n\n",
+    "promotions": [
+      {
+        "calloutMsg": "",
+        "details": "",
+        "enabled": true,
+        "id": "dynamic-category-promotion-sale",
+        "name": "Dynamic Category Promotion Sale",
+        "promotionClass": "PRODUCT",
+        "isExclusive": null,
+        "rank": null,
+        "enableProductPointsMultiplier": false,
+        "enableProductCategoryPointsMultiplier": false,
+        "pointsMultiplier": null,
+        "pointsPromoShowGridBadge": false,
+        "pointsPromoShowPDPBadge": false,
+        "callOutMessageDisplayPages": [],
+        "showPlpBadge": false,
+        "promotionBadgeSVG": null,
+        "hideSaleByPromo": false,
+        "endDate": null
+      }
+    ],
+    "rewards": {
+      "baseRewards": {
+        "value": 100,
+        "formatted": "100"
+      },
+      "promoRewards": {
+        "value": 100,
+        "formatted": "100"
+      },
+      "strikeThrough": "",
+      "multiplier": 1,
+      "message": "<span class=\"js-rewards-highlight\">100</span>  points in rewards"
+    },
+    "canEnrollInRewards": true,
+    "rewardsAllowedInCurrentSession": false,
+    "rewardsHtml": "    <div class=\"forecasted-loyalty-rewards forecasted-loyalty-rewards--pdp product__message--rewards mb-3\">\n        <div class=\"d-flex align-items-left p-0\">\n            \n            \n            <a href=\"/rewardsprogram\" target=\"_blank\" class=\"mt-1 text-decoration-none font-weight-bold\" data-rewards-multiplier=\"1.0\">\n                \n                    \n                        <span>Members get free shipping</span>\n                    \n                \n                <span class=\"forecasted-loyalty-rewards__text\">\n                    \n                        <span class=\"forecasted-loyalty-rewards__cgr-add\">\n                            <svg class=\"svgicon\"><use href=\"#cgr-add\"></use></svg>\n                        </span>\n                        <span class=\"js-rewards-highlight\">100</span>  points in rewards\n                    \n                </span>\n            </a>\n        </div>\n    </div>\n\n",
+    "productName": "Stainless Steel Cutlery Set",
+    "images": {
+      "small": [
+        {
+          "alt": "Stainless Steel Cutlery Set, Color: Stainless",
+          "url": "https://columbia.scene7.com/is/image/ColumbiaSportswear2/GSO0039_029_f?$x1_thumb$&v=1734681990",
+          "retinaUrl": "https://columbia.scene7.com/is/image/ColumbiaSportswear2/GSO0039_029_f?v=1734681990",
+          "title": "Stainless Steel Cutlery Set | 029 | O/S",
+          "modelData": null,
+          "width": "",
+          "height": ""
+        }
+      ],
+      "hi-res": [
+        {
+          "alt": "Stainless Steel Cutlery Set, Color: Stainless",
+          "url": "https://columbia.scene7.com/is/image/ColumbiaSportswear2/GSO0039_029_f?wid=2304&hei=2418&v=1734681990",
+          "retinaUrl": "https://columbia.scene7.com/is/image/ColumbiaSportswear2/GSO0039_029_f?wid=4608&hei=4836&v=1734681990",
+          "title": "Stainless Steel Cutlery Set | 029 | O/S",
+          "modelData": null,
+          "width": "2304",
+          "height": "2418"
+        }
+      ],
+      "large": [
+        {
+          "alt": "Stainless Steel Cutlery Set, Color: Stainless",
+          "url": "https://columbia.scene7.com/is/image/ColumbiaSportswear2/GSO0039_029_f?wid=768&hei=806&v=1734681990",
+          "retinaUrl": "https://columbia.scene7.com/is/image/ColumbiaSportswear2/GSO0039_029_f?wid=1536&hei=1612&v=1734681990",
+          "title": "Stainless Steel Cutlery Set | 029 | O/S",
+          "modelData": null,
+          "width": "768",
+          "height": "806"
+        }
+      ]
+    },
+    "bvAverageRating": 4.9143,
+    "realTimeInventory": null,
+    "availability": {
+      "messages": [],
+      "inStockDate": null,
+      "instock": 1,
+      "stocklevel": 930,
+      "preorder": 0,
+      "backorder": 0,
+      "notavailable": 0,
+      "completelyReserved": 0,
+      "hasReservation": 0,
+      "stockValue": 930
+    },
+    "shortDescription": null,
+    "bvReviewCount": 35,
+    "masterId": "GSO0039"
+  },
+  "resources": {
+    "info_selectforstock": "Please Select Color and Size"
+  },
+  "breadcrumbs": [
+    {
+      "htmlValue": "Bags & Gear",
+      "url": {}
+    },
+    {
+      "htmlValue": "Camping Gear",
+      "url": {}
+    },
+    {
+      "htmlValue": "Dinnerware",
+      "url": {}
+    }
+  ],
+  "CurrentPageMetaData": {
+    "title": "Stainless Steel Cutlery Set"
+  },
+  "dtmLayer": {
+    "pageInstanceID": "Stainless Steel Cutlery Set | Columbia - Production",
+    "page": {
+      "pageInfo": {
+        "pageName": "Stainless Steel Cutlery Set | Columbia",
+        "pageURL": "https://www.columbia.com/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?pid=GSO0039",
+        "pageType": "Product Details",
+        "pageErrorURL": "",
+        "siteError": "",
+        "productsOnPage": [],
+        "locale": "en_US",
+        "siteID": "Columbia_US",
+        "department": null,
+        "subCategory1": null,
+        "subCategory2": null,
+        "pageHier": "Bags & Gear:Camping Gear:Dinnerware",
+        "domain": "columbia.com",
+        "subDomain": "www",
+        "language": "en",
+        "country": "US",
+        "environment": "Production"
+      },
+      "attributes": {
+        "SiteID": "Columbia_US",
+        "currency": "USD"
+      },
+      "form": {
+        "registrationType": "registrationStart"
+      },
+      "product": {
+        "productInfo": {
+          "prodName": "Stainless Steel Cutlery Set",
+          "prodSKU": "090497873485",
+          "prodCategory": "Dinnerware",
+          "prodBrand": "Columbia",
+          "categoryID": "campKitchen-dinnerware,sale-aceq,sale-camp-living,Gift_Guide,Licensee-Equipment,",
+          "prodLocale": "Columbia US",
+          "productColorName": "Stainless",
+          "prodImage": "https://columbia.scene7.com/is/image/ColumbiaSportswear2/GSO0039_029_f?wid=768&hei=806&v=1734681990",
+          "productStyleNumber": "GSO0039029O/S",
+          "productSizeChart": "",
+          "prodHref": "https://www.columbia.com/p/stainless-steel-cutlery-set-%7C-029-%7C-o%2Fs-090497873485.html",
+          "prodDescription": null,
+          "prodPrice": 9.75,
+          "prodRatingImg": "https://www.columbia.com/on/demandware.static/-/Library-Sites-library-col/default/dwce0d729a/images/stars/rating-4_9.jpg",
+          "productReviewAvg": 4.9143,
+          "prodReviewCount": 35,
+          "prodInventory": 930,
+          "prodOrigPrice": 13,
+          "prodDiscPerc": 25,
+          "prodMfSKU": "GSO0039",
+          "isSaleItem": "Yes",
+          "prodDiscAmt": 3.25,
+          "productColorCode": "029",
+          "productMasterProductID": "GSO0039",
+          "primaryCategoryID": "campKitchen,campKitchen:dinnerware",
+          "productClassCategory": "Dinnerware",
+          "productInStock": true,
+          "materialFamilyNumber": "GSO0039",
+          "materialStyleNumber": "GSO0039",
+          "previousMaterialNumber": "CSC021",
+          "materialNumber": "GSO0039029",
+          "UPC": "090497873485"
+        }
+      }
+    },
+    "user": {
+      "customerType": "Guest",
+      "isAuthenticated": false,
+      "isEmployee": false,
+      "customerGroups": "Everyone|Everyone except BonusProductOptOut|Everyone except CUSTCARE_AGENT|Everyone except Employees FF EmpKiosk  Kiosks Pros and Partners|Everyone except Employees, FF, EmpKiosk, Kiosks, Pros and Partners|Everyone except Employees, FF, EmpKiosk, Pros and Partners|Everyone except Employees, FF, EmpKiosk, Pros, Partners & USLoyalty|Everyone except employees and FF|Everyone except employees, FF, pros, & partners|Logged Out and Not Registered|Not_PBL_Agents|PAYPAL|Unregistered|Unregistered (Excludes Emp F&F Pro Partner Emp Kiosk|loyalty-logged-out",
+      "sfccCampaignId": null,
+      "campaign": null,
+      "userAgent": "python-requests/2.31.0",
+      "IP": "91.237.241.164",
+      "SoftwareVersion": "6.2.0",
+      "customerCareAgent": false,
+      "newCustomer": 1,
+      "sfccId": "abl8BltJRsCiLgX2HZQ8r2r5VL",
+      "sfccSessionID": "n_OxNkYupk0VW6EDfqbRnPmqOL8ofYFzN0A=",
+      "abTestParticipation": null,
+      "deviceFormFactor": "Desk",
+      "customerId": "abl8BltJRsCiLgX2HZQ8r2r5VL",
+      "pointsMultiplier": 1,
+      "visitorCountryCode": "UA",
+      "loggedIn": false
+    }
+  }
+}

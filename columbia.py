@@ -12,12 +12,13 @@ class Columbia:
     def __init__(self, page_link, from_file=True):
         self.from_file = from_file
         self.page_link = page_link
+        self.color_ids = []
         self.soup = self.get_soup()
         self.json_variation = self.get_json_variation()
 
     def get_soup(self):
-        file_name = ('temp_files/' + self.page_link.replace('https://www.columbia.com/p/', '').replace('/', '') +
-                     ".txt")
+        file_name = ('temp_files/' + 'columbia/' +
+                     self.page_link.replace('https://www.columbia.com/p/', '').replace('/', '') + ".txt")
         if self.from_file:
             with open(file_name, "r") as file1:
                 content = file1.read()
@@ -45,19 +46,26 @@ class Columbia:
                         return dict_gs
 
     def get_json_variation(self):
+        file_name = ('temp_files/' + 'columbia/' +
+                     self.page_link.replace('https://www.columbia.com/p/', '').replace('/', '') + ".json")
         product_id = self.soup.find_all('span', class_='product-id')[0].get_text()
-        json_link = 'https://www.columbia.com/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?pid=' + product_id
-        response = requests.get(json_link)
-        return json.loads(response.content.decode('utf-8'))
+        json_link = ('https://www.columbia.com/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?pid='
+                     + product_id)
+        if self.from_file:
+            with open(file_name, "r") as file1:
+                content = file1.read()
+        else:
+            self.res = requests.get(json_link)
+            content = self.res.content.decode('utf-8')
+            with open(file_name, "w") as file1:
+                file1.write(content)
+        return json.loads(content)
 
     def get_variants(self):
         variants_list = []
         cart_dict = {}
         gjv = self.get_json_variants()
-        #gjv2 = self.get_json_variation()
         price_dict = self.get_price()
-        # for g in gjv2:
-        #     print(gjv2['dtmLayer'])
         for x in gjv:
             cart_dict['pid'] = x
             color_id = gjv[x]['color']
@@ -69,6 +77,7 @@ class Columbia:
                     'status': 'in_stock',
                     'quantity': availability,
                 }
+                self.color_ids.append(color_id)
             else:
                 continue
 
@@ -77,7 +86,6 @@ class Columbia:
                 'id': x,
                 'price': price_dict,
                 'selection': selection_dict,
-                #'sku': x,
                 'stock': stock_dict,
             })
         return variants_list
@@ -91,8 +99,9 @@ class Columbia:
         color_l = attr_l_color.find_all('span', class_='swatch__core js-attribute-value color-value')
         selected_color = attr_l_color.find_all('span', class_='swatch__core js-attribute-value color-value selected')
         color_attr_dict['domainType'] = 'color'
-        color_attr_dict['id'] = 'color_id'
+        color_attr_dict['id'] = 'color'
         color_attr_dict['label'] = 'Color'
+        color_attr_dict['valueType'] = 'Swatch'
         qwerty = []
         vcl = []
         #soup.findAll(attrs={'class': re.compile(r"^product$")})
@@ -114,11 +123,12 @@ class Columbia:
         size_l = attr_l_size.find_all('a')
         size_attr_dict['domainType'] = 'size'
         size_attr_dict['label'] = 'Size'
-        size_attr_dict['id'] = 'id'
+        size_attr_dict['id'] = 'size'
+        size_attr_dict['valueType'] = 'String'
         vsl = []
         for s in size_l:
             size_name = s.get('data-attr-hover')
-            vsl.append({'id': 'size_id', 'name': size_name})
+            vsl.append({'id': size_name, 'name': size_name})
         size_attr_dict['values'] = vsl
         values_size_list.append(size_attr_dict)
         attributes_dict['size'] = values_size_list
@@ -170,38 +180,48 @@ class Columbia:
             bread_list.append(bread)
         return bread_list
 
-    def get_photo(self):
-        photos_list = []
-        selector_dict = {}
-        photo_l = self.soup.find_all('ul', class_='swiper-wrapper list-unstyled')[0]
-        p_l = photo_l.find_all('div', class_="swiper-zoom-container")
-        for x in p_l:
-            urls = x.find_all('img')[0].get('src')
-            photos_dict = {'url': urls}
-            color_name = x.find_all('img')[0].get('alt').split(': ')[1].split(',')[0]
-            color_id = self.soup.find_all('span', title=color_name)[0].get('data-attr-value')
-            selector_dict['color'] = color_id
-            photos_list.append(photos_dict)
-        return photos_list, selector_dict
+    # def get_photo(self):
+    #     photos_list = []
+    #     selector_dict = {}
+    #     photo_l = self.soup.find_all('ul', class_='swiper-wrapper list-unstyled')[0]
+    #     p_l = photo_l.find_all('div', class_="swiper-zoom-container")
+    #     for x in p_l:
+    #         urls = x.find_all('img')[0].get('src')
+    #         photos_dict = {'url': urls}
+    #         color_name = x.find_all('img')[0].get('alt').split(': ')[1].split(',')[0]
+    #         color_id = self.soup.find_all('span', title=color_name)[0].get('data-attr-value')
+    #         selector_dict['color'] = color_id
+    #         photos_list.append(photos_dict)
+    #     return photos_list, selector_dict
 
-    def get_video(self):
-        videos_list = []
-        video_l = self.soup.find_all('div', class_='video-play-button js-video-player video-aspectratio')
-        for x in video_l:
-            video = x.find_all('img')[0].get('src')
-            videos_dict = {'url': video}
-            videos_list.append(videos_dict)
-        return videos_list
-
+    # def get_video(self):
+    #     videos_list = []
+    #     video_l = self.soup.find_all('div', class_='video-play-button js-video-player video-aspectratio')
+    #     for x in video_l:
+    #         video = x.find_all('img')[0].get('src')
+    #         videos_dict = {'url': video}
+    #         videos_list.append(videos_dict)
+    #     return videos_list
+    
     def get_assets(self):
         assets_list = []
-        assets_dict = {}
-        photos = self.get_photo()
-        videos = self.get_video()
-        assets_dict['images'] = photos[0]
-        assets_dict['selector'] = photos[1]
-        assets_dict['videos'] = videos
-        assets_list.append(assets_dict)
+        ids_path = self.json_variation['product']['variationAttributes'][0]['values']
+        for x in ids_path:
+            assets_dict = {}
+            videos_list = []
+            images_list = []
+            if x['id'] in self.color_ids:
+                assets_dict['selector'] = {'color': x['id']}
+                for q in x['images']['large']:
+                    if 'videoUrl' in q:
+                        video = {'url': q['videoUrl']}
+                        videos_list.append(video)
+                    else:
+                        images = {'url': q['url']}
+                        images_list.append(images)
+                assets_dict['images'] = images_list
+                assets_dict['video'] = videos_list
+                assets_list.append(assets_dict)
         return assets_list
 
     def get_hash(self, store_id, product_id, brand):
