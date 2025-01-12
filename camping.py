@@ -1,17 +1,13 @@
-import requests
-from lxml import etree
+from base import BaseLxml
 import json
 
 
-class Camping:
-    def __init__(self, page_link):
-        self.page_link = page_link
-        self.tree = self.get_tree()
+class Camping(BaseLxml):
 
-    def get_tree(self):
-        res = requests.get(self.page_link)
-        tree = etree.HTML(res.content)
-        return tree
+    NAME = 'camping'
+
+    def get_file_name(self):
+        return self.page_link.replace('https://4camping.com.ua/p/', '').split('/#')[0]
 
     def get_json(self):
         div = self.tree.xpath('//script')[0]

@@ -1,35 +1,21 @@
 from bs4 import BeautifulSoup
-import requests
+#import requests
 import json
 import re
+from base import BaseSoup
 
 
-# .string
-# soup.find_all(id="link2")
+class Columbia(BaseSoup):
 
+    NAME = "columbia"
 
-class Columbia:
     def __init__(self, page_link, from_file=True):
-        self.from_file = from_file
-        self.page_link = page_link
+        super().__init__(page_link, from_file=from_file)
         self.color_ids = []
-        self.soup = self.get_soup()
         self.json_variation = self.get_json_variation()
 
-    def get_soup(self):
-        file_name = ('temp_files/' + 'columbia/' +
-                     self.page_link.replace('https://www.columbia.com/p/', '').replace('/', '') + ".txt")
-        if self.from_file:
-            with open(file_name, "r") as file1:
-                content = file1.read()
-        else:
-            self.res = requests.get(self.page_link)
-            content = self.res.content.decode('utf-8')
-            with open(file_name, "w") as file1:
-                file1.write(content)
-        soup = BeautifulSoup(content, 'html.parser')
-        #html_text = soup.prettify()
-        return soup
+    def get_file_name(self):
+        return self.page_link.replace('https://www.columbia.com/p/', '').replace('/', '').split('?')[0]
 
     def get_json_variants(self):
         div = self.soup.find_all('script')
@@ -46,20 +32,10 @@ class Columbia:
                         return dict_gs
 
     def get_json_variation(self):
-        file_name = ('temp_files/' + 'columbia/' +
-                     self.page_link.replace('https://www.columbia.com/p/', '').replace('/', '') + ".json")
         product_id = self.soup.find_all('span', class_='product-id')[0].get_text()
         json_link = ('https://www.columbia.com/on/demandware.store/Sites-Columbia_US-Site/en_US/Product-Variation?pid='
                      + product_id)
-        if self.from_file:
-            with open(file_name, "r") as file1:
-                content = file1.read()
-        else:
-            self.res = requests.get(json_link)
-            content = self.res.content.decode('utf-8')
-            with open(file_name, "w") as file1:
-                file1.write(content)
-        return json.loads(content)
+        return json.loads(self.get_content(json_link, 'json'))
 
     def get_variants(self):
         variants_list = []

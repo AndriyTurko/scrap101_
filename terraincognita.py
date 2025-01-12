@@ -1,27 +1,15 @@
-import requests
-from lxml import etree
+#from lxml import etree
 import json
+from base import BaseLxml
 
 
-class Terra:
-    def __init__(self, page_link, from_file=True):
-        self.from_file = from_file
-        self.page_link = page_link
-        self.tree = self.get_tree()
+class Terra(BaseLxml):
 
-    def get_tree(self):
-        file_name = ('temp_files/' + self.page_link.replace('https://terraincognita.com.ua/', '').replace('/', '') +
-                     ".txt")
-        if self.from_file:
-            with open(file_name, "r") as file1:
-                content = file1.read()
-        else:
-            self.res = requests.get(self.page_link)
-            content = self.res.content.decode('utf-8')
-            with open(file_name, "w") as file1:
-                file1.write(content)
-        tree = etree.HTML(content)
-        return tree
+    NAME = 'terraincognita'
+
+    def get_file_name(self):
+        file_name = self.page_link.replace('https://terraincognita.com.ua/', '').replace('/', '')
+        return file_name
 
     def get_json_variants(self):
         div = self.tree.xpath('//div[@class="product__options product__page-options"]')
@@ -270,20 +258,20 @@ class Terra:
     #         })
     #     return assets_list
 
-        def get_availability(self):
-            brand_id = self.get_brand()
-            store_id = 'terraincognita'
-            product_id = self.tree.xpath('//input[@name="product_id"]')[0].get('value')
-            hash = self.get_hash(store_id, product_id, brand_id)
-            variant = self.get_variants()
-            availability_dict = {
-                'extractedUrl': self.page_link,
-                'hash': hash,
-                'product_id': product_id,
-                'store_id': store_id,
-                'variants': variant,
-            }
-            return {'product': availability_dict}
+    def get_availability(self):
+        brand_id = self.get_brand()
+        store_id = 'terraincognita'
+        product_id = self.tree.xpath('//input[@name="product_id"]')[0].get('value')
+        hash = self.get_hash(store_id, product_id, brand_id)
+        variant = self.get_variants()
+        availability_dict = {
+            'extractedUrl': self.page_link,
+            'hash': hash,
+            'product_id': product_id,
+            'store_id': store_id,
+            'variants': variant,
+        }
+        return {'product': availability_dict}
 
     def get_full(self):
         product_id = self.tree.xpath('//input[@name="product_id"]')[0].get('value')
