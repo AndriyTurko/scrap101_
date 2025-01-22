@@ -39,6 +39,31 @@ class Base:
         }
         return {'product': availability_dict}
 
+    def get_full(self):
+        product_id = self.get_product_id()
+        store_id = self.get_store_id()
+        variants = self.get_variants()
+        attributes = self.get_attributes()
+        assets = self.get_assets()
+        brand_id = self.get_brand_id()
+        breadcrumbs = self.get_breadcrumbs()
+        description = self.get_descr()
+        hash = self.get_hash(store_id, product_id, brand_id)
+        full_dict = {
+            'extractedUrl': self.page_link,
+            'hash': hash,
+            'product_id': product_id,
+            'store_id': store_id,
+            'variants': variants,
+            'assets': assets,
+            'attributes': attributes,
+            'brand': brand_id,
+            'category': breadcrumbs,
+            'description': description,
+            'variantSelectors': 'variant_selectors_list',
+        }
+        return {'product': full_dict}
+
     def get_hash(self, store_id, product_id, brand):
         return hash((store_id, product_id, self.page_link, brand))
 
@@ -52,6 +77,18 @@ class Base:
         raise NotImplementedError()
 
     def get_variants(self):
+        raise NotImplementedError()
+
+    def get_attributes(self):
+        raise NotImplementedError()
+
+    def get_assets(self):
+        raise NotImplementedError()
+
+    def get_breadcrumbs(self):
+        raise NotImplementedError()
+
+    def get_descr(self):
         raise NotImplementedError()
 
 
@@ -72,6 +109,6 @@ class BaseLxml(Base):
         self.tree = self.get_tree()
 
     def get_tree(self):
-        tree = etree.HTML(self.get_content(self.page_link), 'html.parser')
+        tree = etree.HTML(self.get_content(self.page_link))
         return tree
 

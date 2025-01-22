@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup
+#from bs4 import BeautifulSoup
 #import requests
 import json
 import re
@@ -177,45 +177,11 @@ class Columbia(BaseSoup):
                 assets_list.append(assets_dict)
         return assets_list
 
-    def get_hash(self, store_id, product_id, brand):
-        return hash((store_id, product_id, self.page_link, brand))
+    def get_brand_id(self):
+        return 'columbia'
 
-    def get_availability(self):
-        brand_id = 'Columbia'
-        store_id = 'columbia'
-        product_id = self.soup.find_all('span', class_='product_id')[0].get_text()
-        hash = self.get_hash(store_id, product_id, brand_id)
-        variant = self.get_variants()
-        availability_dict = {
-            'extractedUrl': self.page_link,
-            'hash': hash,
-            'product_id': product_id,
-            'store_id': store_id,
-            'variants': variant,
-        }
-        return {'product': availability_dict}
+    def get_store_id(self):
+        return 'columbia'
 
-    def get_full(self):
-        product_id = self.soup.find_all('span', class_='product-id')[0].get_text()
-        store_id = 'Columbia'
-        variants = self.get_variants()
-        attributes = self.get_attributes()
-        assets = self.get_assets()
-        brand_id = 'Columbia'
-        breadcrumbs = self.get_breadcrumbs()
-        description = self.get_descr()
-        hash = self.get_hash(store_id, product_id, brand_id)
-        full_dict = {
-            'extractedUrl': self.page_link,
-            'hash': hash,
-            'product_id': product_id,
-            'store_id': store_id,
-            'variants': variants,
-            'assets': assets,
-            'attributes': attributes,
-            'brand': brand_id,
-            'category': breadcrumbs,
-            'description': description,
-            'variantSelectors': 'variant_selectors_list',
-        }
-        return {'product': full_dict}
+    def get_product_id(self):
+        return self.soup.find_all('span', class_='product_id')[0].get_text()

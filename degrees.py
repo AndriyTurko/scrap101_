@@ -13,7 +13,7 @@ class Degrees(BaseSoup):
         file_name = self.page_link.replace('https://www.32degrees.com/products/', '').replace('/', '').split('?')[0]
         return file_name
 
-    def get_json(self):
+    def get_json_variants(self):
         text_json = self.soup.find_all('script', id='web-pixels-manager-setup')[0].get_text()
         regex_temp = re.compile(r"(?<=initData\: )(.*})?,},function")
         regex_json = regex_temp.findall(text_json)
@@ -21,9 +21,24 @@ class Degrees(BaseSoup):
         json_end = json.loads(text_json)
         return json_end
 
+    def get_json_assets(self):
+        text_json = self.soup.find_all('main', id='MainContent')[0].find_all('script')[0].get_text()
+        json_end = json.loads(text_json)
+        return json_end['images']['colorGroupImages']
+
     def get_name(self):
-        name = self.soup.find_all('h1', class_='!normal-case heading-4 mb-4')[0].get_text()
-        return name
+        return self.soup.find_all('h1', class_='!normal-case heading-4 mb-4')[0].get_text()
+
+    def get_descr(self):
+
+        title = (self.soup.find_all('summary', class_='relative !list-none pb-18 pt-10 lg:pb-24 lg:pt-16')[0].get_text()
+                 .replace('\n', ''))
+        path_descr = (self.soup.find_all('ul', class_='metafield-single_line_text_field-array')[0]
+                      .find_all('li', class_="metafield-single_line_text_field"))
+        options = ''
+        for x in path_descr:
+            options += ', ' + x.get_text()
+        return title + options
 
     def get_price(self):
         price_dict = {}
@@ -38,22 +53,40 @@ class Degrees(BaseSoup):
         return price_dict
 
     def get_variants(self):
-        variants_list = []
+        gj = self.get_json_variants()
         price_dict = self.get_price()
-        variants_list.append({
-            'cart': 'cart_dict',
-            'id': 'x',
-            'price': price_dict,
-            'selection': 'selection_dict',
-            'stock': 'stock_dict',
-        })
+        variants_list = []
+        for x in gj['productVariants']:
+            path_selection = x['title'].split('/')
+            color = path_selection[0].strip(' ')
+            size = path_selection[1].strip(' ')
+            selection_dict = {'color': color, 'size': size}
+            cart_dict = {'id': x['id'], 'sku': x['sku']}
+            variants_list.append({
+                'cart': cart_dict,
+                'id': x['id'],
+                'price': price_dict,
+                'selection': selection_dict,
+                'sku': x['sku'],
+                'stock': {'status': 'in_stock'},
+            })
         return variants_list
 
-    def get_photos(self):
-        photos_list = []
-        photos_l = self.soup.find_all('div', data_target='product-gallery')
-        photos_list.append({'url': 'a'})
-        return photos_list
+    def get_assets(self):
+        assets_list = []
+        gja = self.get_json_assets()
+        for x in gja:
+            assets_dict = {}
+            assets_dict['selector'] = {'color': x}
+            images_list = []
+            videos_list = []
+            for i in gja[x]:
+                images = i['large'].replace('//', '')
+                images_list.append({'url': images})
+                assets_dict['images'] = images_list
+                assets_dict['videos'] = videos_list
+            assets_list.append(assets_dict)
+        return assets_list
 
     def get_attributes(self):
         attributes_list = []
@@ -103,33 +136,6 @@ class Degrees(BaseSoup):
     def get_product_id(self):
         return self.soup.find_all('div', id="stamped-main-widget")[0].get('data-product-id')
 
-    def get_full(self):
-        product_id = self.soup.find_all('div', id="stamped-main-widget")[0].get('data-product-id')
-        store_id = '32degrees'
-        variants = self.get_variants()
-        attributes = self.get_attributes()
-        #assets = self.get_assets()
-        brand_id = '32degrees'
-        #breadcrumbs = self.get_breadcrumbs()
-        #description = self.get_descr()
-        hash = self.get_hash(store_id, product_id, brand_id)
-        full_dict = {
-            'extractedUrl': self.page_link,
-            'hash': hash,
-            'product_id': product_id,
-            'store_id': store_id,
-            'variants': variants,
-            #'assets': assets,
-            'attributes': attributes,
-            'brand': brand_id,
-            #'category': breadcrumbs,
-            #'description': description,
-            'variantSelectors': 'variant_selectors_list',
-        }
-        return {'product': full_dict}
+    def get_breadcrumbs(self):
+        return []
 
-
-# <script
-#     type='application/json'
-#     data-section-data
-#   >
