@@ -64,10 +64,8 @@ class Degrees(BaseSoup):
             cart_dict = {'id': x['id'], 'sku': x['sku']}
             variants_list.append({
                 'cart': cart_dict,
-                'id': x['id'],
                 'price': price_dict,
                 'selection': selection_dict,
-                'sku': x['sku'],
                 'stock': {'status': 'in_stock'},
             })
         return variants_list
@@ -90,31 +88,26 @@ class Degrees(BaseSoup):
 
     def get_attributes(self):
         attributes_list = []
-        attributes_dict = {}
-        values_color_list = []
         color_attr_dict = {}
         color_l = self.soup.find_all('div', class_='atc-sticky:block flex gap-12 lg:gap-16 flex-wrap')[0]
         color_attr_dict['domainType'] = 'color'
         color_attr_dict['id'] = 'color'
         color_attr_dict['label'] = 'Color'
-        color_attr_dict['valueType'] = 'Swatch'
+        color_attr_dict['valueType'] = 'rgb'
         colors = color_l.find_all('input')
         vcl = []
         for c in colors:
             color_name = c.get('value')
-            color_id = c.get('id')
-            vcl.append({'id': color_id, 'name': color_name, 'swatch': 'swatch'})
+            vcl.append({'id': color_name, 'name': color_name, 'rgb': 'rgb'})
         color_attr_dict['values'] = vcl
-        values_color_list.append(color_attr_dict)
-        attributes_dict['color_values'] = values_color_list
+        attributes_list.append(color_attr_dict)
 
-        values_size_list = []
         size_attr_dict = {}
         size_l = self.soup.find_all('div', class_='atc-sticky:block grid sm:grid-cols-6 grid-cols-3 sm:gap-10 gap-16')[0]
         size_attr_dict['domainType'] = 'size'
         size_attr_dict['id'] = 'size'
         size_attr_dict['label'] = 'Size'
-        size_attr_dict['valueType'] = 'String'
+        size_attr_dict['valueType'] = 'string'
         sizes = size_l.find_all('input')
         vsl = []
         for s in sizes:
@@ -122,9 +115,7 @@ class Degrees(BaseSoup):
             size_id = s.get('id')
             vsl.append({'id': size_id, 'name': size_name})
         size_attr_dict['values'] = vsl
-        values_size_list.append(size_attr_dict)
-        attributes_dict['size_values'] = values_size_list
-        attributes_list.append(attributes_dict)
+        attributes_list.append(size_attr_dict)
         return attributes_list
 
     def get_brand_id(self):
@@ -137,5 +128,8 @@ class Degrees(BaseSoup):
         return self.soup.find_all('div', id="stamped-main-widget")[0].get('data-product-id')
 
     def get_breadcrumbs(self):
+        return []
+
+    def get_variantSelectors(self):
         return []
 

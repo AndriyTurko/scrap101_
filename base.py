@@ -49,6 +49,7 @@ class Base:
         breadcrumbs = self.get_breadcrumbs()
         description = self.get_descr()
         hash = self.get_hash(store_id, product_id, brand_id)
+        variantSelectors = self.get_variantSelectors()
         full_dict = {
             'extractedUrl': self.page_link,
             'hash': hash,
@@ -60,7 +61,7 @@ class Base:
             'brand': brand_id,
             'category': breadcrumbs,
             'description': description,
-            'variantSelectors': 'variant_selectors_list',
+            'variantSelectors': variantSelectors,
         }
         return {'product': full_dict}
 
@@ -89,6 +90,9 @@ class Base:
         raise NotImplementedError()
 
     def get_descr(self):
+        raise NotImplementedError()
+
+    def get_variantSelectors(self):
         raise NotImplementedError()
 
 

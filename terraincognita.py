@@ -165,6 +165,7 @@ class Terra(BaseLxml):
                     attr_dict['valueType'] = 'string'
                 attr_dict['values'] = values_list
             attributests_list.append(attr_dict)
+        self.attributes = attributests_list
         return attributests_list
 
     def get_photos(self):
@@ -188,12 +189,12 @@ class Terra(BaseLxml):
             videos_list.append(url_dict)
         return videos_list
 
-    def get_assets(self, attributes):
+    def get_assets(self):
         photos_dict = self.get_photos()
         assets_list = []
         videos = self.get_videos()
         values = None
-        for attrib in attributes:
+        for attrib in self.attributes:
             if attrib['domainType'] == 'color':
                 values = attrib['values']
                 break
@@ -232,27 +233,6 @@ class Terra(BaseLxml):
     def get_product_id(self):
         return self.tree.xpath('//input[@name="product_id"]')[0].get('value')
 
-    def get_full(self):
-        product_id = self.tree.xpath('//input[@name="product_id"]')[0].get('value')
-        store_id = 'terraincognita'
-        variants = self.get_variants()
-        attributes = self.get_attributes()
-        assets = self.get_assets(self.get_attributes())
-        brand_id = self.get_brand()
-        breadcrumbs = self.get_breadcrumbs()
-        description = self.get_descr()
-        hash = self.get_hash(store_id, product_id, brand_id)
-        full_dict = {
-            'extractedUrl': self.page_link,
-            'hash': hash,
-            'product_id': product_id,
-            'store_id': store_id,
-            'variants': variants,
-            'assets': assets,
-            'attributes': attributes,
-            'brand': brand_id,
-            'category': breadcrumbs,
-            'description': description,
-            'variantSelectors': 'variant_selectors_list',
-        }
-        return {'product': full_dict}
+    def get_variantSelectors(self):
+        return []
+

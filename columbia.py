@@ -68,8 +68,6 @@ class Columbia(BaseSoup):
 
     def get_attributes(self):
         attributes_list = []
-        attributes_dict = {}
-        values_color_list = []
         color_attr_dict = {}
         attr_l_color = self.soup.find_all('div', class_='attribute js-color-attribute')[0]
         color_l = attr_l_color.find_all('span', class_='swatch__core js-attribute-value color-value')
@@ -77,10 +75,9 @@ class Columbia(BaseSoup):
         color_attr_dict['domainType'] = 'color'
         color_attr_dict['id'] = 'color'
         color_attr_dict['label'] = 'Color'
-        color_attr_dict['valueType'] = 'Swatch'
+        color_attr_dict['valueType'] = 'swatch'
         qwerty = []
         vcl = []
-        #soup.findAll(attrs={'class': re.compile(r"^product$")})
         for sc in selected_color:
             qwerty.append(sc)
         for c in color_l:
@@ -91,24 +88,21 @@ class Columbia(BaseSoup):
             swatch = q.get('style').split('(')[1].replace(')', '').split(',')[0]
             vcl.append({'id': color_id, 'name': color_name, 'swatch': swatch})
         color_attr_dict['values'] = vcl
-        values_color_list.append(color_attr_dict)
-        attributes_dict['color'] = values_color_list
-        values_size_list = []
+        attributes_list.append(color_attr_dict)
+
         size_attr_dict = {}
         attr_l_size = self.soup.find_all('div', class_='attribute js-size-attribute')[0]
         size_l = attr_l_size.find_all('a')
         size_attr_dict['domainType'] = 'size'
         size_attr_dict['label'] = 'Size'
         size_attr_dict['id'] = 'size'
-        size_attr_dict['valueType'] = 'String'
+        size_attr_dict['valueType'] = 'string'
         vsl = []
         for s in size_l:
             size_name = s.get('data-attr-hover')
             vsl.append({'id': size_name, 'name': size_name})
         size_attr_dict['values'] = vsl
-        values_size_list.append(size_attr_dict)
-        attributes_dict['size'] = values_size_list
-        attributes_list.append(attributes_dict)
+        attributes_list.append(size_attr_dict)
         return attributes_list
 
     def get_name(self):
@@ -184,4 +178,7 @@ class Columbia(BaseSoup):
         return 'columbia'
 
     def get_product_id(self):
-        return self.soup.find_all('span', class_='product_id')[0].get_text()
+        return self.json_variation['queryString'].replace('pid=', '')
+
+    def get_variantSelectors(self):
+        return []
