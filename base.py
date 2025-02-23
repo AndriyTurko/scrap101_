@@ -16,6 +16,14 @@ class Base:
         self.force_from_page = force_from_page
         self.page_link = page_link
 
+    def run(self):
+        # TODO файл з контентом моє бути в папці temp_files/self.NAME/product_name/content_product_name.txt
+        # TODO запускати beautifulsoup aбо lxml
+        # TODO брати get_availability і записувати в файл temp_files/self.NAME/product_name/avail_product_name.json
+        # TODO брати get_full і записувати в файл temp_files/self.NAME/product_name/full_product_name.json
+        # product_name це імя продукту
+        pass
+
     def get_file_name(self):
         raise NotImplementedError()
 
