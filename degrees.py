@@ -56,18 +56,24 @@ class Degrees(BaseSoup):
         gj = self.get_json_variants()
         price_dict = self.get_price()
         variants_list = []
+        path_quantity = json.loads(self.soup.find_all('form', id='add-to-cart-form')[0].get('data-variants'))
+        quantity_dict = {q['id']: q['inventory_quantity'] for q in path_quantity}
+        #if q['inventory_quantity'] >= 1:
         for x in gj['productVariants']:
-            path_selection = x['title'].split('/')
-            color = path_selection[0].strip(' ')
-            size = path_selection[1].strip(' ')
-            selection_dict = {'color': color, 'size': size}
-            cart_dict = {'id': x['id'], 'sku': x['sku']}
-            variants_list.append({
-                'cart': cart_dict,
-                'price': price_dict,
-                'selection': selection_dict,
-                'stock': {'status': 'in_stock'},
-            })
+            variant_id = int(x['id'])
+            if variant_id in quantity_dict and quantity_dict[variant_id] > 0:
+                path_selection = x['title'].split('/')
+                color = path_selection[0].strip(' ')
+                size = path_selection[1].strip(' ')
+                selection_dict = {'color': color, 'size': size}
+                cart_dict = {'id': x['id'], 'sku': x['sku']}
+                stock_dict = {'status': 'in_stock', 'quantity': quantity_dict[variant_id]}
+                variants_list.append({
+                    'cart': cart_dict,
+                    'price': price_dict,
+                    'selection': selection_dict,
+                    'stock': stock_dict,
+                })
         return variants_list
 
     def get_assets(self):
@@ -96,9 +102,15 @@ class Degrees(BaseSoup):
         color_attr_dict['valueType'] = 'rgb'
         colors = color_l.find_all('input')
         vcl = []
+        path_rgbs = self.soup.find_all('div', class_='atc-sticky:block flex gap-12 lg:gap-16 flex-wrap')[0]
+        rgb_l = path_rgbs.find_all('span')
         for c in colors:
             color_name = c.get('value')
-            vcl.append({'id': color_name, 'name': color_name, 'rgb': 'rgb'})
+            for r in rgb_l:
+                path_rgb = r.get('style')
+                if path_rgb:
+                    rgb = path_rgb.split(':')[1].replace(';', '').replace(' ', '')
+                    vcl.append({'id': color_name, 'name': color_name, 'rgb': rgb})
         color_attr_dict['values'] = vcl
         attributes_list.append(color_attr_dict)
 
@@ -130,6 +142,5 @@ class Degrees(BaseSoup):
     def get_breadcrumbs(self):
         return []
 
-    def get_variantSelectors(self):
-        return []
+
 

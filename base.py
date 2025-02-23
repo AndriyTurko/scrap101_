@@ -1,14 +1,19 @@
 from bs4 import BeautifulSoup
 from lxml import etree
 import requests
+import os
+
+
+class ContentFileNotExistError(Exception):
+    pass
 
 
 class Base:
 
     NAME = ''
 
-    def __init__(self, page_link, from_file=True):
-        self.from_file = from_file
+    def __init__(self, page_link, force_from_page=False):
+        self.force_from_page = force_from_page
         self.page_link = page_link
 
     def get_file_name(self):
@@ -16,7 +21,10 @@ class Base:
 
     def get_content(self, page_url, file_extention='txt'):
         file_path = 'temp_files/{}/{}.{}'.format(self.NAME, self.get_file_name(), file_extention)
-        if self.from_file:
+        folder_name = r'temp_files/{}'.format(self.NAME)
+        if not os.path.exists(folder_name):
+            os.makedirs(folder_name)
+        if os.path.exists(file_path) and not self.force_from_page:
             with open(file_path, "r") as file1:
                 content = file1.read()
         else:
@@ -49,20 +57,35 @@ class Base:
         breadcrumbs = self.get_breadcrumbs()
         description = self.get_descr()
         hash = self.get_hash(store_id, product_id, brand_id)
-        variantSelectors = self.get_variantSelectors()
-        full_dict = {
-            'extractedUrl': self.page_link,
-            'hash': hash,
-            'product_id': product_id,
-            'store_id': store_id,
-            'variants': variants,
-            'assets': assets,
-            'attributes': attributes,
-            'brand': brand_id,
-            'category': breadcrumbs,
-            'description': description,
-            'variantSelectors': variantSelectors,
-        }
+        if attributes:
+            variantselectors = [x['id'] for x in attributes]
+            full_dict = {
+                'extractedUrl': self.page_link,
+                'hash': hash,
+                'product_id': product_id,
+                'store_id': store_id,
+                'variants': variants,
+                'assets': assets,
+                'attributes': attributes,
+                'brand': brand_id,
+                'category': breadcrumbs,
+                'description': description,
+                'variantSelectors': variantselectors,
+            }
+        else:
+            full_dict = {
+                'extractedUrl': self.page_link,
+                'hash': hash,
+                'product_id': product_id,
+                'store_id': store_id,
+                'variants': variants,
+                'assets': assets,
+                'attributes': attributes,
+                'brand': brand_id,
+                'category': breadcrumbs,
+                'description': description,
+                'variantSelectors': [],
+            }
         return {'product': full_dict}
 
     def get_hash(self, store_id, product_id, brand):
@@ -92,13 +115,10 @@ class Base:
     def get_descr(self):
         raise NotImplementedError()
 
-    def get_variantSelectors(self):
-        raise NotImplementedError()
-
 
 class BaseSoup(Base):
-    def __init__(self, page_link, from_file=True):
-        super().__init__(page_link, from_file=from_file)
+    def __init__(self, page_link, force_from_page=False):
+        super().__init__(page_link, force_from_page=force_from_page)
         self.soup = self.get_soup()
 
     def get_soup(self):
@@ -108,8 +128,8 @@ class BaseSoup(Base):
 
 
 class BaseLxml(Base):
-    def __init__(self, page_link, from_file=True):
-        super().__init__(page_link, from_file=from_file)
+    def __init__(self, page_link, force_from_page=False):
+        super().__init__(page_link, force_from_page=force_from_page)
         self.tree = self.get_tree()
 
     def get_tree(self):

@@ -9,8 +9,8 @@ class Columbia(BaseSoup):
 
     NAME = "columbia"
 
-    def __init__(self, page_link, from_file=True):
-        super().__init__(page_link, from_file=from_file)
+    def __init__(self, page_link, force_from_page=False):
+        super().__init__(page_link, force_from_page=force_from_page)
         self.color_ids = []
         self.json_variation = self.get_json_variation()
 
@@ -180,5 +180,4 @@ class Columbia(BaseSoup):
     def get_product_id(self):
         return self.json_variation['queryString'].replace('pid=', '')
 
-    def get_variantSelectors(self):
-        return []
+

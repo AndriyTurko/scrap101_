@@ -233,6 +233,5 @@ class Terra(BaseLxml):
     def get_product_id(self):
         return self.tree.xpath('//input[@name="product_id"]')[0].get('value')
 
-    def get_variantSelectors(self):
-        return []
+
 

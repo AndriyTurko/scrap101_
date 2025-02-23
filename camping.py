@@ -6,9 +6,8 @@ class Camping(BaseLxml):
 
     NAME = 'camping'
 
-    def __init__(self, page_link, from_file=True):
-        super().__init__(page_link, from_file=from_file)
-        self.variant_selectors_list = []
+    def __init__(self, page_link, force_from_page=False):
+        super().__init__(page_link, force_from_page=force_from_page)
 
     def get_file_name(self):
         return self.page_link.replace('https://4camping.com.ua/p/', '').replace('/', '')
@@ -20,8 +19,6 @@ class Camping(BaseLxml):
         dict_gs = json.loads(json_text2)
         return dict_gs
 
-    def get_variant_selectors(self):
-        return self.variant_selectors_list
 
     def get_price2(self, variant_dict):
         regular_price = variant_dict['price']
@@ -127,7 +124,6 @@ class Camping(BaseLxml):
 
     def get_attributes(self):
         attributests_list = []
-        self.variant_selectors_list = []
         attributests_l = self.tree.xpath('//fieldset[@id="variants"]')
         if len(attributests_l) >= 1:
             control_group_l = attributests_l[0].xpath('.//div[@class="control-group"]')
@@ -151,7 +147,6 @@ class Camping(BaseLxml):
                         swatch = control_swatch.get('srcset')
                         values_list.append({'id': attr_id2, 'name': attr_name, 'swatch': swatch})
                     attr_dict['values'] = values_list
-                self.variant_selectors_list.append(domain_type)
                 attributests_list.append(attr_dict)
         return attributests_list
 
