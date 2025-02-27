@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from lxml import etree
 import requests
 import os
+import json
 
 
 class ContentFileNotExistError(Exception):
@@ -17,21 +18,27 @@ class Base:
         self.page_link = page_link
 
     def run(self):
-        # TODO файл з контентом моє бути в папці temp_files/self.NAME/product_name/content_product_name.txt
-        # TODO запускати beautifulsoup aбо lxml
-        # TODO брати get_availability і записувати в файл temp_files/self.NAME/product_name/avail_product_name.json
-        # TODO брати get_full і записувати в файл temp_files/self.NAME/product_name/full_product_name.json
-        # product_name це імя продукту
-        pass
+        full_content = self.get_full()
+        avail_content = self.get_availability()
+        file_path_avail = 'temp_files/{}/{}/avail_{}.json'.format(self.NAME, self.get_file_name(), self.get_file_name())
+        file_path_full = 'temp_files/{}/{}/full_{}.json'.format(self.NAME, self.get_file_name(), self.get_file_name())
+        with open(file_path_avail, "w") as file1:
+            file1.write(json.dumps(avail_content))
+        with open(file_path_full, "w") as file1:
+            file1.write(json.dumps(full_content))
+
 
     def get_file_name(self):
         raise NotImplementedError()
 
     def get_content(self, page_url, file_extention='txt'):
-        file_path = 'temp_files/{}/{}.{}'.format(self.NAME, self.get_file_name(), file_extention)
+        file_path = 'temp_files/{}/{}/content_{}.{}'.format(self.NAME, self.get_file_name(), self.get_file_name(), file_extention)
         folder_name = r'temp_files/{}'.format(self.NAME)
         if not os.path.exists(folder_name):
             os.makedirs(folder_name)
+        folder_name2 = r'temp_files/{}/{}'.format(self.NAME, self.get_file_name())
+        if not os.path.exists(folder_name2):
+            os.makedirs(folder_name2)
         if os.path.exists(file_path) and not self.force_from_page:
             with open(file_path, "r") as file1:
                 content = file1.read()

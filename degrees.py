@@ -10,8 +10,7 @@ class Degrees(BaseSoup):
     NAME = 'degrees'
 
     def get_file_name(self):
-        file_name = self.page_link.replace('https://www.32degrees.com/products/', '').replace('/', '').split('?')[0]
-        return file_name
+        return self.page_link.split('/')[-1]
 
     def get_json_variants(self):
         text_json = self.soup.find_all('script', id='web-pixels-manager-setup')[0].get_text()
