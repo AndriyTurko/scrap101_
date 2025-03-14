@@ -94,22 +94,15 @@ class Degrees(BaseSoup):
     def get_attributes(self):
         attributes_list = []
         color_attr_dict = {}
-        color_l = self.soup.find_all('div', class_='atc-sticky:block flex gap-12 lg:gap-16 flex-wrap')[0]
         color_attr_dict['domainType'] = 'color'
         color_attr_dict['id'] = 'color'
         color_attr_dict['label'] = 'Color'
         color_attr_dict['valueType'] = 'rgb'
-        colors = color_l.find_all('input')
         vcl = []
-        path_rgbs = self.soup.find_all('div', class_='atc-sticky:block flex gap-12 lg:gap-16 flex-wrap')[0]
-        rgb_l = path_rgbs.find_all('span')
-        for c in colors:
-            color_name = c.get('value')
-            for r in rgb_l:
-                path_rgb = r.get('style')
-                if path_rgb:
-                    rgb = path_rgb.split(':')[1].replace(';', '').replace(' ', '')
-                    vcl.append({'id': color_name, 'name': color_name, 'rgb': rgb})
+        for p in self.soup.find('div', class_='atc-sticky:block flex gap-12 lg:gap-16 flex-wrap').find_all('label'):
+            color_name = p.find_all('input')[0].get('value')
+            rgbs_name = p.find_all('span')[-1].get('style').split(':')[1].replace(';', '').replace(' ', '')
+            vcl.append({'id': color_name, 'name': color_name, 'rgb': rgbs_name})
         color_attr_dict['values'] = vcl
         attributes_list.append(color_attr_dict)
 
