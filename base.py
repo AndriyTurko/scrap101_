@@ -5,7 +5,7 @@ import os
 import json
 import redis
 
-from read_data import FileConnector, RedisConnector
+from read_data import FileConnector, RedisConnector, SQLiteConnector
 
 
 class ContentFileNotExistError(Exception):
@@ -25,6 +25,8 @@ class Base:
             self.connector = FileConnector(self.NAME, self.file_name)
         elif storage == 'redis':
             self.connector = RedisConnector(self.NAME, self.file_name)
+        elif storage == 'sqlite':
+            self.connector = SQLiteConnector(self.NAME, self.file_name)
         else:
             raise NotImplementedError('not implemented storage {}'.format(storage))
 
@@ -34,7 +36,7 @@ class Base:
             print('there is no data about product')
             self.connector.write_json_into_storage(self.avail_content)
             self.full_content = self.get_full()
-            self.connector.write_json_into_storage(self.full_content, 'full')
+            self.connector.write_json_into_storage(self.full_content, json_type='full')
             print('full and avail json were writtten into {}'.format(self.storage))
         else:
             print('full and avail json are already exist in {}, checking for inconsistent data'.format(self.storage))
@@ -42,25 +44,16 @@ class Base:
             if old_avail_json != self.avail_content:
                 print('there are inconsistencies in availability json. updating avail json')
                 self.connector.write_json_into_storage(self.avail_content)
-                old_full_json = self.connector.read_json_from_storage('full')
+                old_full_json = self.connector.read_json_from_storage(json_type='full')
                 self.full_content = self.get_full()
                 if self.check_attr_inconsistency(old_full_json, self.full_content):
-                    print('True')
-                    self.connector.write_json_into_storage(self.full_content, 'full')
-                else:
-                    print('Flase')
-
+                    self.connector.write_json_into_storage(self.full_content, json_type='full')
 
     def check_attr_inconsistency(self, old_full_json, new_full_json):
-        old_attr_color_list = old_full_json['product']['attributes'][0]['values']
-        new_attr_color_list = new_full_json['product']['attributes'][0]['values']
-        old_attr_size_list = old_full_json['product']['attributes'][1]['values']
-        new_attr_size_list = new_full_json['product']['attributes'][1]['values']
-        if old_attr_color_list != new_attr_color_list or old_attr_size_list != new_attr_size_list:
-            return True
-        else:
-            return False
-
+        # for x in old_full_json['product']['attributes']:
+        #     for i in range(len(x['values'])):
+        #         print(x['values'][i]['id'])
+        return old_full_json['product']['attributes'] != new_full_json['product']['attributes']
 
     def get_file_name(self):
         return self.page_link.split('/')[-1].split('?')[0]
@@ -167,23 +160,21 @@ class Base:
 
 class BaseSoup(Base):
     def run(self):
-        self.soup = self.get_soup()
+        self.get_soup()
         super().run()
 
     def get_soup(self):
-        soup = BeautifulSoup(self.get_content(self.page_link), 'html.parser')
+        self.soup = BeautifulSoup(self.get_content(self.page_link), 'html.parser')
         # html_text = soup.prettify()
-        return soup
 
 
 class BaseLxml(Base):
 
     def run(self):
-        self.tree = self.get_tree()
+        self.get_tree()
         super().run()
 
 
     def get_tree(self):
-        tree = etree.HTML(self.get_content(self.page_link))
-        return tree
+        self.tree = etree.HTML(self.get_content(self.page_link))
 

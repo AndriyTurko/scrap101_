@@ -8,8 +8,7 @@ class Terra(BaseLxml):
     NAME = 'terraincognita'
 
     def get_file_name(self):
-        file_name = self.page_link.replace('https://terraincognita.com.ua/', '').replace('/', '')
-        return file_name
+        return self.page_link.replace('https://terraincognita.com.ua/', '').replace('/', '')
 
     def get_json_variants(self):
         div = self.tree.xpath('//div[@class="product__options product__page-options"]')
