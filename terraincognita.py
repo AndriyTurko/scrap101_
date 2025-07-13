@@ -1,27 +1,14 @@
-import requests
-from lxml import etree
+#from lxml import etree
 import json
+from base import BaseLxml
 
 
-class Terra:
-    def __init__(self, page_link, from_file=True):
-        self.from_file = from_file
-        self.page_link = page_link
-        self.tree = self.get_tree()
+class Terra(BaseLxml):
 
-    def get_tree(self):
-        file_name = ('temp_files/' + self.page_link.replace('https://terraincognita.com.ua/', '').replace('/', '') +
-                     ".txt")
-        if self.from_file:
-            with open(file_name, "r") as file1:
-                content = file1.read()
-        else:
-            self.res = requests.get(self.page_link)
-            content = self.res.content.decode('utf-8')
-            with open(file_name, "w") as file1:
-                file1.write(content)
-        tree = etree.HTML(content)
-        return tree
+    NAME = 'terraincognita'
+
+    def get_file_name(self):
+        return self.page_link.replace('https://terraincognita.com.ua/', '').replace('/', '')
 
     def get_json_variants(self):
         div = self.tree.xpath('//div[@class="product__options product__page-options"]')
@@ -31,9 +18,6 @@ class Terra:
             json_text3 = json_text2.replace('let ro_variants = ', '')
             dict_gs = json.loads(json_text3)
             return dict_gs
-
-    def get_hash(self, store_id, product_id, brand):
-        return hash((store_id, product_id, self.page_link, brand))
 
     def get_brand(self):
         brand = self.tree.xpath('//span[@itemprop="name"]')[0].text
@@ -180,6 +164,7 @@ class Terra:
                     attr_dict['valueType'] = 'string'
                 attr_dict['values'] = values_list
             attributests_list.append(attr_dict)
+        self.attributes = attributests_list
         return attributests_list
 
     def get_photos(self):
@@ -203,12 +188,12 @@ class Terra:
             videos_list.append(url_dict)
         return videos_list
 
-    def get_assets(self, attributes):
+    def get_assets(self):
         photos_dict = self.get_photos()
         assets_list = []
         videos = self.get_videos()
         values = None
-        for attrib in attributes:
+        for attrib in self.attributes:
             if attrib['domainType'] == 'color':
                 values = attrib['values']
                 break
@@ -238,74 +223,14 @@ class Terra:
             })
         return assets_list
 
-    # def get_assets(self, attributes):
-    #     assets_list = []
-    #     videos = self.get_videos()
-    #     values = None
-    #     for attrib in attributes:
-    #         if attrib['domainType'] == 'color':
-    #             values = attrib['values']
-    #             break
-    #     if values:
-    #         for v in values:
-    #             color_id = v['id']
-    #             photo_path = '//li[@data-option-value="' + color_id + '"]//img'
-    #             images = [x.get('data-src') for x in self.tree.xpath(photo_path)]
-    #             assets_list.append({
-    #                 'images': images,
-    #                 'selector': {'color': color_id},
-    #                 'videos': videos,
-    #             })
-    #             for x in self.tree.xpath('//ul[@class="thumb-vertical"]//li'):
-    #                 color_ids_ex = x.get('data-option-value')
-    #                 if color_ids_ex == '0':
-    #                     extra_photo = self.tree.xpath('//li[@data-option-value="0"]//img')[0].get('data-src')
-    #                     images.append(extra_photo)
-    #     else:
-    #         images = [x.get('data-src') for x in self.tree.xpath('//div[@id="thumb-slider"]//img')]
-    #         assets_list.append({
-    #             'images': images,
-    #             'selector': {},
-    #             'videos': videos,
-    #         })
-    #     return assets_list
+    def get_brand_id(self):
+        return self.get_brand()
 
-        def get_availability(self):
-            brand_id = self.get_brand()
-            store_id = 'terraincognita'
-            product_id = self.tree.xpath('//input[@name="product_id"]')[0].get('value')
-            hash = self.get_hash(store_id, product_id, brand_id)
-            variant = self.get_variants()
-            availability_dict = {
-                'extractedUrl': self.page_link,
-                'hash': hash,
-                'product_id': product_id,
-                'store_id': store_id,
-                'variants': variant,
-            }
-            return {'product': availability_dict}
+    def get_store_id(self):
+        return 'terraincognita'
 
-    def get_full(self):
-        product_id = self.tree.xpath('//input[@name="product_id"]')[0].get('value')
-        store_id = 'terraincognita'
-        variants = self.get_variants()
-        attributes = self.get_attributes()
-        assets = self.get_assets(self.get_attributes())
-        brand_id = self.get_brand()
-        breadcrumbs = self.get_breadcrumbs()
-        description = self.get_descr()
-        hash = self.get_hash(store_id, product_id, brand_id)
-        full_dict = {
-            'extractedUrl': self.page_link,
-            'hash': hash,
-            'product_id': product_id,
-            'store_id': store_id,
-            'variants': variants,
-            'assets': assets,
-            'attributes': attributes,
-            'brand': brand_id,
-            'category': breadcrumbs,
-            'description': description,
-            'variantSelectors': 'variant_selectors_list',
-        }
-        return {'product': full_dict}
+    def get_product_id(self):
+        return self.tree.xpath('//input[@name="product_id"]')[0].get('value')
+
+
+
