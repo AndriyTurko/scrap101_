@@ -8,6 +8,12 @@ class Gorgany(BaseLxml):
 
     NAME = 'gorgany'
 
+    def clean_text(self, text):
+        if isinstance(text, str):
+            text = text.encode('utf-8').decode('unicode_escape')
+            return text.replace('\u00a0', ' ')
+        return text
+
     def get_file_name(self):
         return self.page_link.split('/')[-1]
 
@@ -29,13 +35,10 @@ class Gorgany(BaseLxml):
                 price_dict = {"currency": "USD", "fmp": fmp_price, "regular": regular_price}
                 return price_dict
         else:
-            json_text = self.tree.xpath('//script[@type="application/ld+json"]')[-1].text
-            json_text2 = json_text.replace('\n', '')
-            dict_gs = json.loads(json_text2)
-            currency = dict_gs['offers']['priceCurrency']
-            regular_price = dict_gs['offers']['price']
-            price_dict = {"currency": currency, "fmp": regular_price, "regular": regular_price}
-            return price_dict, dict_gs
+            json_text = self.tree.xpath('//span[@class="price"]')[0].text#.replace(' ', '')
+            regular_price = json_text
+            price_dict = {"currency": 'currency', "fmp": regular_price.encode('utf-8').decode('utf-8'), "regular": regular_price}
+            return price_dict
 
     def get_name(self):
         return self.tree.xpath('//span[@itemprop="name"]')[0].text
@@ -106,12 +109,13 @@ class Gorgany(BaseLxml):
                 })
             return variants_list
         else:
-            gj = self.get_price()[1]
-            price_dict = self.get_price()[0]
-            sku = gj['sku']
+            price_dict = self.get_price()
             variants_list.append({
-                'price': price_dict,
-                'sku': sku,
+                'cart': {'id': 'sku'},
+                    'id': 'x',
+                    'price': price_dict,
+                    'selection': 'selection_dict',
+                    'stock': {'status': 'in_stock'},
             })
             return variants_list
 
@@ -148,7 +152,6 @@ class Gorgany(BaseLxml):
                     assets_dict['videos'] = videos_list
                     assets_list.append(assets_dict)
             return assets_list
-
 
     def get_swatches_for_assets(self, data_json):
         swatch_dict = {}
