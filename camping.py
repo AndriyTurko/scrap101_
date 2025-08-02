@@ -68,9 +68,7 @@ class Camping(BaseLxml):
         return descr_end
 
     def get_brand(self):
-        brand_l = self.tree.xpath('//p[@class="product-producer-logo"]//img')
-        brand_ex = brand_l[0]
-        brand = brand_ex.get('alt')
+        brand= self.tree.xpath('//p[@class="product-producer-logo"]//img')[0].get('alt')
         return brand
 
     def get_breadcrumbs(self):
