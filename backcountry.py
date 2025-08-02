@@ -19,27 +19,12 @@ class Backcountry(BaseLxml):
         self.get_json()
 
     def get_content(self, page_url, file_extention='txt'):
-        file_path = 'temp_files/{}/{}/content_{}.{}'.format(self.NAME, self.file_name, self.file_name, file_extention)
-        folder_name = r'temp_files/{}'.format(self.NAME)
-        if not os.path.exists(folder_name):
-            os.makedirs(folder_name)
-        folder_name2 = r'temp_files/{}/{}'.format(self.NAME, self.file_name)
-        if not os.path.exists(folder_name2):
-            os.makedirs(folder_name2)
-        if os.path.exists(file_path) and not self.force_from_page:
-            with open(file_path, "r") as file1:
-                content = file1.read()
-        else:
-            headers = {
-                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                'accept-encoding': 'gzip, deflate, br, zstd',
-                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
-            }
-            self.res = requests.get(page_url, headers=headers)
-            content = self.res.content.decode('utf-8')
-            with open(file_path, "w") as file1:
-                file1.write(content)
-        return content
+        headers = {
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+            'accept-encoding': 'gzip, deflate, br, zstd',
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+        }
+        return super().get_content(page_url, file_extention, headers)
 
     def get_json(self):
         js_sc = self.tree.xpath('//script[@type="application/ld+json"]')
