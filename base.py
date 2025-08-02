@@ -79,6 +79,30 @@ class Base:
                 file1.write(content)
         return content
 
+    def get_headers(self):
+        return {}
+
+    # def get_content(self, page_url, headers=None, file_extention='txt'):
+    #     file_path = 'temp_files/{}/{}/content_{}.{}'.format(self.NAME, self.file_name, self.file_name, file_extention)
+    #     folder_name = r'temp_files/{}'.format(self.NAME)
+    #     if not os.path.exists(folder_name):
+    #         os.makedirs(folder_name)
+    #     folder_name2 = r'temp_files/{}/{}'.format(self.NAME, self.file_name)
+    #     if not os.path.exists(folder_name2):
+    #         os.makedirs(folder_name2)
+    #     if os.path.exists(file_path) and not self.force_from_page:
+    #         with open(file_path, "r") as file1:
+    #             content = file1.read()
+    #     else:
+    #         if headers:
+    #             self.res = requests.get(page_url, headers=headers)
+    #         else:
+    #             self.res = requests.get(page_url)
+    #         content = self.res.content.decode('utf-8')
+    #         with open(file_path, "w") as file1:
+    #             file1.write(content)
+    #     return content
+
     def get_availability(self):
         brand_id = self.get_brand_id()
         store_id = self.get_store_id()
