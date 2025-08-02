@@ -58,7 +58,7 @@ class Base:
     def get_file_name(self):
         return self.page_link.split('/')[-1].split('?')[0]
 
-    def get_content(self, page_url, file_extention='txt'):
+    def get_content(self, page_url, file_extention='txt', headers=None):
         file_path = 'temp_files/{}/{}/content_{}.{}'.format(self.NAME, self.file_name, self.file_name, file_extention)
         folder_name = r'temp_files/{}'.format(self.NAME)
         if not os.path.exists(folder_name):
@@ -70,7 +70,10 @@ class Base:
             with open(file_path, "r") as file1:
                 content = file1.read()
         else:
-            self.res = requests.get(page_url)
+            if headers:
+                self.res = requests.get(page_url, headers=headers)
+            else:
+                self.res = requests.get(page_url)
             content = self.res.content.decode('utf-8')
             with open(file_path, "w") as file1:
                 file1.write(content)
