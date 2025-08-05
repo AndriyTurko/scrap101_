@@ -10,13 +10,6 @@ class Outlet(BaseSoup):
 
     NAME = 'outlet'
 
-    def get_headers(self):
-        return {
-                    'User-Agent': 'Mozilla/5(Macintosh; Intel Mac OS X 10_15_7)',
-                    'referer': self.page_link
-
-                }
-
     def get_brand_id(self):
         return 'outlet'
 
@@ -49,13 +42,6 @@ class Outlet(BaseSoup):
         message = path.find_all('span', class_="savings")[0].get_text().replace('\n', '').replace('  ', '')
         price_dict['message'] = message
         return price_dict
-
-    # def get_content(self, page_url, file_extention='txt'):
-    #     header = {
-    #                 'User-Agent': 'Mozilla/5(Macintosh; Intel Mac OS X 10_15_7)',
-    #                 'referer': 'https://www.joesnewbalanceoutlet.com/pd/2002r/M2002RV1-45663.html'
-    #             }
-    #     super().get_content(page_url, file_extention='txt', headers=header)
 
     def get_content(self, page_url, file_extention='txt'):
         header = {
