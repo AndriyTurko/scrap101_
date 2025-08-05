@@ -28,6 +28,7 @@ class Backcountry(BaseLxml):
 
     def get_json(self):
         js_sc = self.tree.xpath('//script[@type="application/ld+json"]')
+        print(js_sc)
         self.json = json.loads(js_sc[1].text)
         self.bread_crumb_json = json.loads(js_sc[0].text)
 
@@ -49,6 +50,7 @@ class Backcountry(BaseLxml):
                 "skuId": sku
             }
             selection_dict = {"color": variant.get("color", ""), "size": variant.get("size", "")}
+            #fmp_price =
             price_dict = {
                 "currency": variant["offers"]["priceCurrency"],
                 "regular": variant["offers"]["price"],
@@ -106,8 +108,8 @@ class Backcountry(BaseLxml):
 
         size_values = []
 
-        for size_element in size_block.xpath('.//div[@data-id="size-available"]/span'):
-            size = size_element.text
+        ex = list(dict.fromkeys([x.text for x in size_block.xpath('.//span')]))
+        for size in ex:
             size_values.append({
                 "id": size,
                 "color": size
@@ -122,7 +124,12 @@ class Backcountry(BaseLxml):
         }
 
     def get_assets(self):
-        return []
+        assets_list = []
+        assets_dict = {}
+        #path = self.tree.xpath('//button[@class="chakra-button css-18lzhd2"]')
+        a_json = self.tree.xpath('//script[@type="application/json"]')[0].text
+        print(a_json)
+        return assets_list
 
     def get_breadcrumbs(self):
         bredcrumbs = []
