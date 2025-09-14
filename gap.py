@@ -1,6 +1,6 @@
 #from bs4 import BeautifulSoup
-# import json
-# import re
+import json
+import re
 # import os
 # import requests
 from base import BaseSoup
@@ -97,15 +97,44 @@ class Gap(BaseSoup):
         attributes_list.append(size_attr_dict)
         return attributes_list
 
+    # def get_assets(self):
+    #     assets_list = []
+    #     assets_dict = {}
+    #     photos_list = []
+    #     videos_list = []
+    #     path = self.soup.find_all('div', class_='product_photos-container')[0]
+    #     for x in path.find_all('div', class_='brick__product-image-wrapper'):
+    #         photo = 'https://www.gap.com/' + x.find_all('a')[0].get('href')
+    #         photos_list.append({'url': photo})
+    #     assets_dict['images'] = photos_list
+    #     assets_dict['videos'] = videos_list
+    #     assets_list.append(assets_dict)
+    #     return assets_list
+
+    def get_assets_json(self):
+        for script in self.soup.find_all('script'):
+            text = script.text
+            if '"productImages"' in text:
+                print(text)
+                print(type(text))
+                new_text = json.loads(text)
+                print(new_text)
+                # match = re.search(r'\{"[^"]+_main":\{.*?\}\}', text, re.DOTALL)
+                # if match:
+                #     return match.group(0)
+
     def get_assets(self):
         assets_list = []
         assets_dict = {}
         photos_list = []
         videos_list = []
-        path = self.soup.find_all('div', class_='product_photos-container')[0]
-        for x in path.find_all('div', class_='brick__product-image-wrapper'):
-            photo = 'https://www.gap.com/' + x.find_all('a')[0].get('href')
-            photos_list.append({'url': photo})
+        for script in self.soup.find_all('script'):
+            if 'productImages' in script.text:
+                #print(script.text.strip())
+                pattern = r'\{"[^"]+_main":\{.*?\}\}'
+                match = re.findall(pattern, script.text, re.DOTALL)
+                if match:
+                    print(match.group(0))
         assets_dict['images'] = photos_list
         assets_dict['videos'] = videos_list
         assets_list.append(assets_dict)
