@@ -1,6 +1,7 @@
 import json
-import os
-import requests
+#import os
+#import requests
+import re
 
 from base import BaseLxml
 
@@ -42,6 +43,7 @@ class Backcountry(BaseLxml):
 
     def get_variants(self):
         variants_list = []
+        print(self.json)
         for variant in self.json["hasVariant"]:
             sku = self.get_product_id()
             cart_dict = {
@@ -49,6 +51,7 @@ class Backcountry(BaseLxml):
                 "skuId": sku
             }
             selection_dict = {"color": variant.get("color", ""), "size": variant.get("size", "")}
+            #fmp_price =
             price_dict = {
                 "currency": variant["offers"]["priceCurrency"],
                 "regular": variant["offers"]["price"],
@@ -77,19 +80,28 @@ class Backcountry(BaseLxml):
         return attributests_list
 
     def get_colors(self):
-        color_block = self.tree.xpath('//div[@data-id="colorTile"]')[0]
+        color_block = self.tree.xpath('//div[@data-id="colorTile"]')
         if not color_block:
             return
 
         color_values = []
 
-        for color_element in color_block.xpath('.//div[@data-id="color-available"]/img'):
-            color = color_element.get("alt")
-            color_values.append({
-                "id": color,
-                "color": color,
-                "swatch": color_element.get("src")
-            })
+        if color_block[0].xpath('.//div[@data-id="color-available"]/img'):
+            for color_element in color_block.xpath('.//div[@data-id="color-available"]/img'):
+                id = color_element.get("src").split('/')[-1].replace('.jpg', '')
+                color = color_element.get("alt")
+                color_values.append({
+                    "id": id,
+                    "color": color,
+                    "swatch": 'https:' + color_element.get("src")
+                })
+        else:
+            for s in self.get_assets():
+                color_values.append({
+                    "id": s['selector']['color'],
+                    "color": s['selector']['color'],
+                    "swatch": s['images'][0].replace('large', 'small')
+                })
 
         return {
             "domainType": "color",
@@ -106,8 +118,8 @@ class Backcountry(BaseLxml):
 
         size_values = []
 
-        for size_element in size_block.xpath('.//div[@data-id="size-available"]/span'):
-            size = size_element.text
+        ex = list(dict.fromkeys([x.text for x in size_block.xpath('.//span')]))
+        for size in ex:
             size_values.append({
                 "id": size,
                 "color": size
@@ -122,7 +134,33 @@ class Backcountry(BaseLxml):
         }
 
     def get_assets(self):
-        return []
+        assets_list = []
+        path_json = self.tree.xpath('//script[@type="application/json"]')[0].text
+        a_json = json.loads(path_json)['props']['pageProps']['product']
+        if a_json['detailImagesByColor']:
+            for color_id in a_json['detailImagesByColor']:
+                assets_dict = {}
+                test_list = []
+                for y in a_json['detailImagesByColor'][color_id]:
+                    image = 'https://content.backcountry.com/' + y['largeImg']
+                    test_list.append(image)
+                main_image = re.sub(r'_D[1-9](?=\.jpg$)', '', test_list[0])
+                test_list.append(main_image)
+                images_list = [{'url': url} for url in test_list]
+                assets_dict['selector'] = {'color': color_id}
+                assets_dict['images'] = images_list
+                assets_dict['videos'] = []
+                assets_list.append(assets_dict)
+        else:
+            for image in self.json['image']:
+                assets_dict = {}
+                images_list = []
+                images_list.append(image)
+                assets_dict['selector'] = {'color': image.split('/')[-1].replace('.jpg', '')}
+                assets_dict['images'] = images_list
+                assets_dict['videos'] = []
+                assets_list.append(assets_dict)
+        return assets_list
 
     def get_breadcrumbs(self):
         bredcrumbs = []
